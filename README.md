@@ -75,6 +75,7 @@ sros run-demo
 
 | Document | Description |
 |----------|-------------|
+| [User Guide](docs/USER_GUIDE.md) | Complete user, developer, and operator manual |
 | [Architecture](docs/ARCHITECTURE.md) | System design and data flows |
 | [Study Guide](docs/SROS_STUDY_GUIDE_v1.md) | Learning guide for developers |
 | [API Reference](docs/API_REFERENCE.md) | HTTP API documentation |

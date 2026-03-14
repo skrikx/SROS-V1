@@ -32,7 +32,7 @@ SROS is built on principles of sovereignty, safety, and transparency. Contributo
 2. **Clone locally**:
    ```bash
    git clone <repository-url>
-   cd sros-v1-alpha
+   cd SROS-V1
    ```
 3. **Install in development mode**:
    ```bash
@@ -44,7 +44,7 @@ SROS is built on principles of sovereignty, safety, and transparency. Contributo
    ```
 5. **Run tests**:
    ```bash
-   python run_all_tests.py
+   pytest tests/ -v
    ```
 
 ---
@@ -201,7 +201,8 @@ SRXML is the primary language for schemas, agents, and workflows.
 Always validate SRXML before committing:
 
 ```bash
-sros workflow validate path/to/workflow.srxml
+# Validate by running the parser tests
+pytest tests/test_srxml_parser.py tests/test_srxml_validator.py -v
 ```
 
 ---
@@ -251,7 +252,7 @@ class TestKernelBootstrap:
 
 ```bash
 # Run all tests
-python run_all_tests.py
+pytest tests/ -v
 
 # Run specific test file
 pytest tests/test_kernel_boot.py
@@ -275,7 +276,7 @@ pytest tests/integration/
 
 ### Before Submitting
 
-1. **Run all tests**: `python run_all_tests.py`
+1. **Run all tests**: `pytest tests/ -v`
 2. **Check code style**: Ensure PEP 8 compliance
 3. **Update documentation**: Add/update relevant docs
 4. **Update CHANGELOG**: Add entry for your changes

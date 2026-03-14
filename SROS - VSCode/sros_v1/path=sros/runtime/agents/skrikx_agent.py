@@ -1,2 +1,0 @@
-content=# SELF-REWRITE VERIFIED
-```

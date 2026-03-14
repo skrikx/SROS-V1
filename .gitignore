@@ -1,14 +1,46 @@
 node_modules/
 
-# Auto-added by Sanitizer
-.env
-.env.local
-.pytest_cache/
+# Python
 __pycache__/
 *.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Environment and secrets
+.env
+.env.local
+.env.*.local
+
+# Test and runtime artifacts
+.pytest_cache/
 *.log
 *.jsonl
 test_output.txt
-sros.egg-info/
+pytest_out.txt
+git_status_output.txt
+
+# Editor and IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# Internal scripts not for public distribution
 apex_commit.ps1
 manual_verify.py
+sanitize_release.py
+apex_oss_update.ps1
+
+# Legacy workspace copy
+SROS - VSCode/
+
+# Data artifacts (user-generated at runtime)
+data/
