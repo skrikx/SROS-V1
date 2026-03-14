@@ -1,4 +1,4 @@
-# SROS v1: Sovereign Runtime Operating System
+# SROS v1: Sovereign Recursive Operating System
 
 [![Version](https://img.shields.io/badge/version-1.0.0--alpha-blue.svg)](VERSION)
 [![Python](https://img.shields.io/badge/python-3.10+-green.svg)](https://python.org)
