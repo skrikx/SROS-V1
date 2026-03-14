@@ -1,0 +1,35 @@
+<workflow id="legal.contract_review" name="Contract Review with Data Governance" xmlns="https://sros.sros/schema/workflow">
+    <identity>
+        <system_name>Contract Review Pipeline</system_name>
+        <purpose>Simulate a governed contract clause extraction workflow where
+        agent access to confidential client documents is policy-restricted
+        and every extraction step is receipted for audit.</purpose>
+    </identity>
+
+    <context>
+        <item>Domain: Legal and Compliance</item>
+        <item>Regulation: Attorney-Client Privilege, Data Governance</item>
+        <item>Risk: Confidential data leakage, unauthorized clause modification</item>
+    </context>
+
+    <step id="step1" order="1">
+        <agent>architect</agent>
+        <instruction>Analyze the contract structure and identify key clause
+        categories: liability, indemnification, termination, payment terms.
+        Access is read-only. No modification of source document allowed.</instruction>
+    </step>
+
+    <step id="step2" order="2">
+        <agent>builder</agent>
+        <instruction>Extract risk-relevant clauses from the identified
+        categories. The governance policy restricts output to summaries
+        only - full clause text must not leave the governed environment.</instruction>
+    </step>
+
+    <step id="step3" order="3">
+        <agent>tester</agent>
+        <instruction>Validate that no full clause text was included in the
+        extraction output. Confirm that only summaries were emitted.
+        Generate a data governance compliance receipt.</instruction>
+    </step>
+</workflow>

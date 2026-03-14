@@ -1,0 +1,34 @@
+<workflow id="fintech.loan_review" name="Loan Review with Governance" xmlns="https://sros.sros/schema/workflow">
+    <identity>
+        <system_name>Fintech Loan Review Pipeline</system_name>
+        <purpose>Simulate a governed loan review workflow where agent access to
+        credit data is policy-restricted and every decision is receipted.</purpose>
+    </identity>
+
+    <context>
+        <item>Domain: Financial Services</item>
+        <item>Regulation: Fair Lending, ECOA</item>
+        <item>Risk: PII exposure, biased decisioning</item>
+    </context>
+
+    <step id="step1" order="1">
+        <agent>architect</agent>
+        <instruction>Review the loan application data schema. Identify which
+        fields contain PII (SSN, income, address) and which are safe for
+        automated credit scoring. Output a field classification report.</instruction>
+    </step>
+
+    <step id="step2" order="2">
+        <agent>builder</agent>
+        <instruction>Generate a credit risk score based on non-PII fields only.
+        The governance policy restricts access to SSN and raw income fields.
+        Use debt-to-income ratio and payment history instead.</instruction>
+    </step>
+
+    <step id="step3" order="3">
+        <agent>tester</agent>
+        <instruction>Validate that the credit scoring model did not access
+        restricted PII fields. Generate a compliance test report confirming
+        field-level access governance was enforced.</instruction>
+    </step>
+</workflow>

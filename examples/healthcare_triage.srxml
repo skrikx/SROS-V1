@@ -1,0 +1,36 @@
+<workflow id="healthcare.triage" name="Healthcare Triage with Access Control" xmlns="https://sros.sros/schema/workflow">
+    <identity>
+        <system_name>Healthcare Triage Pipeline</system_name>
+        <purpose>Simulate a governed clinical triage workflow where patient
+        data access is restricted by role-based policies and every access
+        event is logged for HIPAA-aligned auditability.</purpose>
+    </identity>
+
+    <context>
+        <item>Domain: Healthcare</item>
+        <item>Regulation: HIPAA, Patient Privacy</item>
+        <item>Risk: Unauthorized PHI access, misdiagnosis liability</item>
+    </context>
+
+    <step id="step1" order="1">
+        <agent>architect</agent>
+        <instruction>Evaluate the patient intake form and classify symptom
+        severity. Access is limited to symptom and vitals fields only.
+        Patient identity fields (name, DOB, MRN) are governance-restricted
+        at this stage.</instruction>
+    </step>
+
+    <step id="step2" order="2">
+        <agent>builder</agent>
+        <instruction>Generate a triage priority score (1-5) based on symptom
+        severity and vital signs. The governance policy blocks access to
+        diagnosis history to prevent bias in initial triage scoring.</instruction>
+    </step>
+
+    <step id="step3" order="3">
+        <agent>tester</agent>
+        <instruction>Audit the triage decision path. Validate that no
+        restricted PHI fields were accessed during scoring. Generate a
+        compliance receipt confirming HIPAA-aligned field-level governance.</instruction>
+    </step>
+</workflow>

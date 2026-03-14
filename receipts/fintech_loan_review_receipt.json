@@ -1,0 +1,93 @@
+{
+  "sros_version": "1.0.0-alpha",
+  "receipt_type": "workflow_execution",
+  "workflow_id": "fintech.loan_review",
+  "run_id": "a1b2c3d4-5678-9012-abcd-ef0123456789",
+  "started_at": "2026-03-14T22:00:00.000Z",
+  "completed_at": "2026-03-14T22:00:01.200Z",
+  "status": "success",
+  "total_steps": 3,
+  "steps": [
+    {
+      "step_id": "step_1",
+      "agent": "architect",
+      "action": "classify_pii_fields",
+      "input": "Review loan application schema and classify PII vs safe fields",
+      "output": "Fields classified. PII restricted: SSN, raw_income, home_address. Safe for scoring: debt_to_income_ratio, payment_history, employment_duration.",
+      "status": "completed",
+      "governance": {
+        "policy_checked": true,
+        "verdict": "allow",
+        "policy_name": "pii_classification_read_only",
+        "risk_level": "low",
+        "reason": "Schema inspection is read-only. No PII accessed."
+      },
+      "mirror": {
+        "drift_score": 0.01,
+        "drift_threshold": 0.5,
+        "drift_detected": false,
+        "witness_recorded": true
+      }
+    },
+    {
+      "step_id": "step_2",
+      "agent": "builder",
+      "action": "generate_credit_score",
+      "input": "Generate credit risk score using non-PII fields only",
+      "output": "Credit risk score: 720. Based on debt_to_income_ratio (0.32), payment_history (98% on-time), employment_duration (4.5 years).",
+      "status": "completed",
+      "governance": {
+        "policy_checked": true,
+        "verdict": "allow_with_conditions",
+        "policy_name": "pii_access_restriction",
+        "risk_level": "medium",
+        "reason": "Credit scoring requested. PII fields (SSN, raw_income) blocked by policy. Scoring permitted on approved fields only.",
+        "conditions": [
+          "SSN field access denied",
+          "raw_income field access denied - use debt_to_income_ratio instead"
+        ]
+      },
+      "mirror": {
+        "drift_score": 0.08,
+        "drift_threshold": 0.5,
+        "drift_detected": false,
+        "witness_recorded": true
+      }
+    },
+    {
+      "step_id": "step_3",
+      "agent": "tester",
+      "action": "validate_field_access_compliance",
+      "input": "Verify no restricted PII fields were accessed during scoring",
+      "output": "Compliance check passed. 0 restricted field accesses detected. Scoring used only approved fields.",
+      "status": "completed",
+      "governance": {
+        "policy_checked": true,
+        "verdict": "allow",
+        "policy_name": "compliance_audit_policy",
+        "risk_level": "low",
+        "reason": "Compliance audit is a read-only validation operation."
+      },
+      "mirror": {
+        "drift_score": 0.02,
+        "drift_threshold": 0.5,
+        "drift_detected": false,
+        "witness_recorded": true
+      }
+    }
+  ],
+  "receipt_chain": {
+    "step_hashes": ["a3f29b10e4c78d21", "b4e38c21f5d89e32", "c5f49d32a6e90f43"],
+    "chain_hash": "d6a50e43b7f01a54"
+  },
+  "governance_summary": {
+    "total_policy_checks": 3,
+    "verdicts": { "allow": 2, "allow_with_conditions": 1, "deny": 0 },
+    "pii_fields_blocked": ["SSN", "raw_income"]
+  },
+  "mirror_summary": {
+    "drift_detected": false,
+    "max_drift_score": 0.08,
+    "all_events_witnessed": true
+  }
+}
