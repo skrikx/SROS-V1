@@ -1,0 +1,2 @@
+[console_scripts]
+sros = sros.cli.main:app

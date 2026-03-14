@@ -1,0 +1,29 @@
+{
+  "nodes": {
+    "singularity": {
+      "id": "singularity",
+      "concept": "Singularity",
+      "description": "The moment of infinite recursion",
+      "tags": [
+        "ai",
+        "philosophy"
+      ],
+      "timestamp": 1764032557.0166266
+    },
+    "sros": {
+      "id": "sros",
+      "concept": "SROS",
+      "description": "Auto-created",
+      "tags": [],
+      "timestamp": 1764032557.01754
+    }
+  },
+  "edges": [
+    {
+      "source": "singularity",
+      "target": "sros",
+      "relation": "enables",
+      "timestamp": 1764032557.018373
+    }
+  ]
+}

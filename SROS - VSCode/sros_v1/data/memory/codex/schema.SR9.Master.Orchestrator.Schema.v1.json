@@ -1,0 +1,124 @@
+{
+  "id": "schema.SR9.Master.Orchestrator.Schema.v1",
+  "name": "Schema: SR9.Master.Orchestrator.Schema.v1",
+  "content": {
+    "tag": "sr9_schema",
+    "@id": "SR9.Master.Orchestrator.Schema.v1",
+    "@version": "1.0.0",
+    "meta": {
+      "name": {
+        "#text": "SR9 Master Orchestrator Schema"
+      },
+      "description": {
+        "#text": "Schema for SR9 graphs that orchestrate SR8 compilers, SRX agents,\n      tools, and OS calls into chainable execution flows."
+      },
+      "owner": {
+        "#text": "PlatXP"
+      },
+      "plane": {
+        "#text": "orchestrator"
+      }
+    },
+    "sr9_graph": {
+      "@id": "{SR9.Graph.Id}",
+      "@mode": "Apex|Test|Sandbox",
+      "@tenant": "PlatXP",
+      "@env": "prod|stage|dev",
+      "objective": {
+        "summary": {
+          "#text": "{What this graph is meant to do}"
+        },
+        "detail": {
+          "#text": "{Deep description of the orchestration}"
+        }
+      },
+      "nodes": {
+        "node": {
+          "@id": "{Node.Id}",
+          "@kind": "sr8|srx_agent|tool|os_call|mirror",
+          "name": {
+            "#text": "{Human readable node name}"
+          },
+          "description": {
+            "#text": "{What this node does}"
+          },
+          "config": {
+            "sr8_ref": {
+              "@id": "{SR8.Chain.Id}",
+              "@artifact_type": "prompt_pack"
+            }
+          },
+          "io": {
+            "inputs": {
+              "input": {
+                "@from_node": "{Upstream.Node.Id}"
+              }
+            },
+            "outputs": {
+              "output": {
+                "@to_node": "{Downstream.Node.Id}"
+              }
+            }
+          },
+          "policy": {
+            "retries": {
+              "#text": "1"
+            },
+            "timeout_ms": {
+              "#text": "120000"
+            },
+            "on_fail": {
+              "#text": "abort_graph|skip_node|fallback_node"
+            }
+          }
+        }
+      },
+      "edges": {
+        "edge": {
+          "@id": "{Edge.Id}",
+          "@from": "{Node.Id}",
+          "@to": "{Node.Id}",
+          "condition": {
+            "#text": "{Expression describing when this transition fires}"
+          }
+        }
+      },
+      "policies": {
+        "safety": {
+          "max_tokens_total": {
+            "#text": "6000"
+          },
+          "max_runtime_ms": {
+            "#text": "900000"
+          }
+        },
+        "observability": {
+          "trace_id": {
+            "#text": "{Injected trace id from SROS}"
+          },
+          "log_level": {
+            "#text": "info|debug|error"
+          }
+        }
+      },
+      "mirror_hooks": {
+        "on_graph_start": {
+          "#text": "open_trace"
+        },
+        "on_graph_end": {
+          "#text": "close_trace_and_grade"
+        },
+        "on_node_error": {
+          "#text": "record_rca"
+        }
+      }
+    },
+    "_source_file": "C:\\Users\\hassm\\OneDrive\\Desktop\\SROS\\SROS - VSCode\\Knowledge\\Master_SROS_Schemas\\sr9-master-schema.xml",
+    "_filename": "sr9-master-schema.xml"
+  },
+  "metadata": {
+    "type": "srxml_schema",
+    "source": "C:\\Users\\hassm\\OneDrive\\Desktop\\SROS\\SROS - VSCode\\Knowledge\\Master_SROS_Schemas\\sr9-master-schema.xml",
+    "ingested_at": "now"
+  }
+}

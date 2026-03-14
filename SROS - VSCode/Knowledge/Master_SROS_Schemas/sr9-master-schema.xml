@@ -1,0 +1,96 @@
+<sr9_schema
+  id="SR9.Master.Orchestrator.Schema.v1"
+  xmlns="https://sros.skrikx/schema/sr9/v1"
+  version="1.0.0">
+
+  <meta>
+    <name>SR9 Master Orchestrator Schema</name>
+    <description>
+      Schema for SR9 graphs that orchestrate SR8 compilers, SRX agents,
+      tools, and OS calls into chainable execution flows.
+    </description>
+    <owner>PlatXP</owner>
+    <plane>orchestrator</plane>
+  </meta>
+
+  <!-- SR9 graph root -->
+  <sr9_graph
+    id="{SR9.Graph.Id}"
+    mode="Apex|Test|Sandbox"
+    tenant="PlatXP"
+    env="prod|stage|dev">
+
+    <objective>
+      <summary>{What this graph is meant to do}</summary>
+      <detail>{Deep description of the orchestration}</detail>
+    </objective>
+
+    <!-- Nodes represent tasks, agents, tools, or compilers -->
+    <nodes>
+
+      <node
+        id="{Node.Id}"
+        kind="sr8|srx_agent|tool|os_call|mirror">
+        <name>{Human readable node name}</name>
+        <description>{What this node does}</description>
+
+        <config>
+          <!-- Example for SR8 child -->
+          <sr8_ref id="{SR8.Chain.Id}" artifact_type="prompt_pack" />
+          <!-- Example for SRX agent child -->
+          <!-- <srx_agent_ref id="{SRX.Agent.Id}" /> -->
+        </config>
+
+        <io>
+          <inputs>
+            <input from_node="{Upstream.Node.Id}" />
+          </inputs>
+          <outputs>
+            <output to_node="{Downstream.Node.Id}" />
+          </outputs>
+        </io>
+
+        <policy>
+          <retries>1</retries>
+          <timeout_ms>120000</timeout_ms>
+          <on_fail>abort_graph|skip_node|fallback_node</on_fail>
+        </policy>
+
+      </node>
+
+    </nodes>
+
+    <!-- Edges explicitly model flow and conditions -->
+    <edges>
+      <edge
+        id="{Edge.Id}"
+        from="{Node.Id}"
+        to="{Node.Id}">
+        <condition>
+          {Expression describing when this transition fires}
+        </condition>
+      </edge>
+    </edges>
+
+    <!-- Graph level policies -->
+    <policies>
+      <safety>
+        <max_tokens_total>6000</max_tokens_total>
+        <max_runtime_ms>900000</max_runtime_ms>
+      </safety>
+      <observability>
+        <trace_id>{Injected trace id from SROS}</trace_id>
+        <log_level>info|debug|error</log_level>
+      </observability>
+    </policies>
+
+    <!-- Mirror hooks -->
+    <mirror_hooks>
+      <on_graph_start>open_trace</on_graph_start>
+      <on_graph_end>close_trace_and_grade</on_graph_end>
+      <on_node_error>record_rca</on_node_error>
+    </mirror_hooks>
+
+  </sr9_graph>
+
+</sr9_schema>

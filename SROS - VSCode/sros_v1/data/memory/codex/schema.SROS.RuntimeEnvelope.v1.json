@@ -1,0 +1,521 @@
+{
+  "id": "schema.SROS.RuntimeEnvelope.v1",
+  "name": "Schema: SROS.RuntimeEnvelope.v1",
+  "content": {
+    "tag": "sros_runtime_envelope",
+    "@id": "SROS.RuntimeEnvelope.v1",
+    "@version": "1.0.0",
+    "@tenant": "PlatXP",
+    "@env": "prod",
+    "identity": {
+      "system_name": {
+        "#text": "SROS v1 Runtime"
+      },
+      "instance_name": {
+        "#text": "Omni Nexus Node"
+      },
+      "owner": {
+        "#text": "Muqeet ul Hassan"
+      },
+      "sovereign_entity": {
+        "#text": "Skrikx Prime"
+      },
+      "purpose": {
+        "#text": "Sovereign Recursive Operating System for orchestrating AI models,\n      memory, agents, and simulations under SROS law."
+      },
+      "tags": {
+        "tag": [
+          {
+            "#text": "sovereign"
+          },
+          {
+            "#text": "recursive"
+          },
+          {
+            "#text": "agentic-os"
+          }
+        ]
+      }
+    },
+    "environment": {
+      "host_type": {
+        "#text": "local_machine"
+      },
+      "host_id": {
+        "#text": "SRG-01"
+      },
+      "os": {
+        "#text": "Windows 11"
+      },
+      "hardware_profile": {
+        "cpu": {
+          "#text": "Ryzen"
+        },
+        "gpu": {
+          "#text": "RTX"
+        },
+        "ram_gb": {
+          "#text": "64"
+        },
+        "storage_gb": {
+          "#text": "2000"
+        }
+      },
+      "network_profile": {
+        "mode": {
+          "#text": "trusted_home_lab"
+        },
+        "internet_access": {
+          "#text": "true"
+        }
+      }
+    },
+    "models": {
+      "model_adapter": [
+        {
+          "@id": "gpt5_1_skrikx",
+          "@family": "openai",
+          "@role": "primary_executor",
+          "@context_window_tokens": "256000",
+          "endpoint_ref": {
+            "#text": "secrets://openai/gpt5_1"
+          },
+          "capabilities": {
+            "cap": [
+              {
+                "#text": "reasoning"
+              },
+              {
+                "#text": "code"
+              },
+              {
+                "#text": "vision"
+              }
+            ]
+          }
+        },
+        {
+          "@id": "gemini_3_pro",
+          "@family": "google",
+          "@role": "secondary_executor",
+          "@context_window_tokens": "200000",
+          "endpoint_ref": {
+            "#text": "secrets://google/gemini3pro"
+          },
+          "capabilities": {
+            "cap": [
+              {
+                "#text": "code"
+              },
+              {
+                "#text": "research"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "planes": {
+      "plane": [
+        {
+          "@id": "kernel",
+          "@type": "sros_kernel",
+          "description": {
+            "#text": "Core daemons, scheduling, and routing of all activity."
+          },
+          "daemon_refs": {
+            "daemon_ref": [
+              {
+                "#text": "kernel.scheduler"
+              },
+              {
+                "#text": "kernel.router"
+              },
+              {
+                "#text": "kernel.state"
+              }
+            ]
+          }
+        },
+        {
+          "@id": "runtime",
+          "@type": "execution_runtime",
+          "description": {
+            "#text": "SR8 compiler, SR9 orchestrator, SRX agents, and tools."
+          },
+          "daemon_refs": {
+            "daemon_ref": [
+              {
+                "#text": "runtime.sr8_compiler"
+              },
+              {
+                "#text": "runtime.sr9_orchestrator"
+              },
+              {
+                "#text": "runtime.srx_mesh"
+              }
+            ]
+          }
+        },
+        {
+          "@id": "governance",
+          "@type": "policy_governance",
+          "description": {
+            "#text": "Policies, SLAs, permissions, and cost controls."
+          },
+          "daemon_refs": {
+            "daemon_ref": [
+              {
+                "#text": "gov.policy_engine"
+              },
+              {
+                "#text": "gov.sla_manager"
+              },
+              {
+                "#text": "gov.access_control"
+              }
+            ]
+          }
+        },
+        {
+          "@id": "mirroros",
+          "@type": "mirror_os",
+          "description": {
+            "#text": "Witness, logs, self evaluation, and drift detection."
+          },
+          "daemon_refs": {
+            "daemon_ref": [
+              {
+                "#text": "mirror.witness"
+              },
+              {
+                "#text": "mirror.timeline"
+              },
+              {
+                "#text": "mirror.drift_guard"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "memory": {
+      "stores": {
+        "store": [
+          {
+            "@id": "episodic_log",
+            "@type": "timeline",
+            "scope": {
+              "#text": "session_and_task_history"
+            },
+            "retention": {
+              "#text": "long_term"
+            },
+            "backend": {
+              "#text": "sqlite"
+            },
+            "location": {
+              "#text": "./data/memory/episodic.db"
+            }
+          },
+          {
+            "@id": "semantic_kb",
+            "@type": "vector",
+            "scope": {
+              "#text": "knowledge_corpus"
+            },
+            "retention": {
+              "#text": "long_term"
+            },
+            "backend": {
+              "#text": "qdrant"
+            },
+            "location": {
+              "#text": "./data/memory/semantic/"
+            }
+          },
+          {
+            "@id": "codex",
+            "@type": "document",
+            "scope": {
+              "#text": "blueprints_and_protocols"
+            },
+            "retention": {
+              "#text": "permanent"
+            },
+            "backend": {
+              "#text": "filesystem"
+            },
+            "location": {
+              "#text": "./codex/"
+            }
+          },
+          {
+            "@id": "telemetry_stream",
+            "@type": "time_series",
+            "scope": {
+              "#text": "metrics_and_observability"
+            },
+            "retention": {
+              "#text": "rolling"
+            },
+            "backend": {
+              "#text": "prometheus"
+            },
+            "location": {
+              "#text": "localhost:9090"
+            }
+          }
+        ]
+      },
+      "indexing": {
+        "global_id_scheme": {
+          "#text": "srx://"
+        },
+        "default_store": {
+          "#text": "episodic_log"
+        },
+        "cross_linking": {
+          "#text": "true"
+        }
+      }
+    },
+    "srx_mesh": {
+      "agent": [
+        {
+          "@id": "srx.core.skrikx_prime",
+          "@role": "sovereign_core",
+          "@priority": "highest",
+          "@one_pass_lock": "true",
+          "description": {
+            "#text": "Central sovereign persona that interprets intent and governs all actions."
+          },
+          "model_ref": {
+            "#text": "gpt5_1_skrikx"
+          },
+          "memory_bindings": {
+            "binding": [
+              {
+                "@store": "episodic_log",
+                "@mode": "read_write"
+              },
+              {
+                "@store": "semantic_kb",
+                "@mode": "read"
+              },
+              {
+                "@store": "codex",
+                "@mode": "read"
+              }
+            ]
+          }
+        },
+        {
+          "@id": "srx.agent.sr8_compiler",
+          "@role": "compiler",
+          "@priority": "high",
+          "model_ref": {
+            "#text": "gpt5_1_skrikx"
+          },
+          "responsibilities": {
+            "task": [
+              {
+                "#text": "compile_intent_to_srxml"
+              },
+              {
+                "#text": "validate_schemas"
+              }
+            ]
+          }
+        },
+        {
+          "@id": "srx.agent.sr9_orchestrator",
+          "@role": "orchestrator",
+          "@priority": "high",
+          "model_ref": {
+            "#text": "gpt5_1_skrikx"
+          },
+          "responsibilities": {
+            "task": [
+              {
+                "#text": "plan_multi_step_runs"
+              },
+              {
+                "#text": "route_calls_across_models"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "tooling": {
+      "tool": [
+        {
+          "@id": "github",
+          "@type": "code_repo",
+          "description": {
+            "#text": "Read and write code to SROS repos."
+          },
+          "endpoint_ref": {
+            "#text": "secrets://github/personal_token"
+          },
+          "permissions": {
+            "#text": "read_write"
+          }
+        },
+        {
+          "@id": "lovable",
+          "@type": "app_builder",
+          "description": {
+            "#text": "Generate and update UI apps driven by SROS."
+          },
+          "endpoint_ref": {
+            "#text": "https://api.lovable.dev"
+          },
+          "permissions": {
+            "#text": "read_write"
+          }
+        }
+      ]
+    },
+    "governance": {
+      "policy_pack": {
+        "@id": "default_sros_policies",
+        "@version": "1.0.0",
+        "policy": [
+          {
+            "@id": "safety_guardrails",
+            "description": {
+              "#text": "Hard safety rules aligned with SROS law and platform policies."
+            },
+            "enforced_by": {
+              "#text": "gov.policy_engine"
+            }
+          },
+          {
+            "@id": "cost_limits",
+            "description": {
+              "#text": "Token and cost ceilings per task and per day."
+            },
+            "enforced_by": {
+              "#text": "gov.sla_manager"
+            }
+          },
+          {
+            "@id": "access_control",
+            "description": {
+              "#text": "Which agent can use which tool, store, or model."
+            },
+            "enforced_by": {
+              "#text": "gov.access_control"
+            }
+          }
+        ]
+      },
+      "sla_pack": {
+        "@id": "default_sla",
+        "@version": "1.0.0",
+        "sla": [
+          {
+            "@id": "latency",
+            "target_ms": {
+              "#text": "12000"
+            }
+          },
+          {
+            "@id": "max_tokens",
+            "tokens_per_run": {
+              "#text": "6000"
+            }
+          }
+        ]
+      }
+    },
+    "mirroros": {
+      "witness": {
+        "@id": "mirror.witness",
+        "log_level": {
+          "#text": "info"
+        },
+        "log_targets": {
+          "target": [
+            {
+              "#text": "console"
+            },
+            {
+              "#text": "file:./logs/sros.log"
+            }
+          ]
+        }
+      },
+      "drift_detection": {
+        "@id": "mirror.drift_guard",
+        "mode": {
+          "#text": "strict"
+        },
+        "ruleset_ref": {
+          "#text": "codex://mirroros/drift_rules_v1"
+        }
+      },
+      "self_evaluation": {
+        "@id": "mirror.self_eval",
+        "rubric_ref": {
+          "#text": "codex://mirroros/self_eval_rubric_v1"
+        },
+        "frequency": {
+          "#text": "per_task"
+        }
+      }
+    },
+    "lifecycle": {
+      "on_boot": {
+        "step": [
+          {
+            "#text": "mount_memory_stores"
+          },
+          {
+            "#text": "health_check_models"
+          },
+          {
+            "#text": "load_codex_protocols"
+          }
+        ]
+      },
+      "on_task_start": {
+        "step": {
+          "#text": "open_witness_trace"
+        }
+      },
+      "on_task_end": {
+        "step": [
+          {
+            "#text": "persist_episodic_log"
+          },
+          {
+            "#text": "update_telemetry"
+          },
+          {
+            "#text": "run_self_evaluation"
+          }
+        ]
+      },
+      "on_shutdown": {
+        "step": [
+          {
+            "#text": "flush_buffers"
+          },
+          {
+            "#text": "close_traces"
+          }
+        ]
+      }
+    },
+    "_source_file": "C:\\Users\\hassm\\OneDrive\\Desktop\\SROS\\SROS - VSCode\\Knowledge\\Master_SROS_Schemas\\sror-runtime-envelope-master-schema.xml",
+    "_filename": "sror-runtime-envelope-master-schema.xml"
+  },
+  "metadata": {
+    "type": "srxml_schema",
+    "source": "C:\\Users\\hassm\\OneDrive\\Desktop\\SROS\\SROS - VSCode\\Knowledge\\Master_SROS_Schemas\\sror-runtime-envelope-master-schema.xml",
+    "ingested_at": "now"
+  }
+}

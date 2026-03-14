@@ -1,0 +1,154 @@
+<sr8_schema
+  id="SR8.Master.Compiler.Schema.v1"
+  xmlns="https://sros.skrikx/schema/sr8/v1"
+  version="1.0.0">
+
+  <meta>
+    <name>SR8 Master Compiler Schema</name>
+    <description>
+      Canonical schema for SR8 compiler chains that turn human intent into
+      structured artifacts (prompts, specs, visuals, code blueprints).
+    </description>
+    <owner>PlatXP</owner>
+    <plane>compiler</plane>
+  </meta>
+
+  <!-- Core types SR8 can compile -->
+  <chain_types>
+    <type id="prompt_pack" />
+    <type id="visual_chain" />
+    <type id="video_chain" />
+    <type id="code_blueprint" />
+    <type id="research_brief" />
+    <type id="agent_spec" />
+    <type id="os_blueprint" />
+  </chain_types>
+
+  <!-- SR8 chain root -->
+  <sr8_chain
+    id="{SR8.Chain.Id}"
+    mode="Apex|Draft|Review"
+    artifact_type="{prompt_pack|visual_chain|...}"
+    tenant="PlatXP"
+    env="design">
+
+    <intent>
+      <!-- Human language description of what must exist at the end -->
+      <summary>{Short single line}</summary>
+      <detail>{Expanded description of outcome and constraints}</detail>
+      <constraints>
+        <constraint>{Constraint 1}</constraint>
+        <constraint>{Constraint 2}</constraint>
+      </constraints>
+      <success_criteria>
+        <criterion>{How we judge this chain as successful}</criterion>
+      </success_criteria>
+    </intent>
+
+    <!-- Global tokens and style rules -->
+    <tokens>
+      <tone>sovereign|mythic|clinical|friendly</tone>
+      <style>Pithy, layered, technical, marketing, etc</style>
+      <language>en</language>
+      <brand_refs>
+        <ref>PlatXP</ref>
+        <ref>SROS</ref>
+      </brand_refs>
+    </tokens>
+
+    <!-- Stages SR8 runs through to compile the artifact -->
+    <stages>
+
+      <stage
+        id="analysis"
+        type="intent_decomposition"
+        required="true">
+        <input>intent</input>
+        <output>requirements_map</output>
+        <goal>
+          Break the raw intent into concrete requirements, risks, and unknowns.
+        </goal>
+        <checks>
+          <check>All constraints mapped</check>
+          <check>Success criteria mirrored</check>
+        </checks>
+      </stage>
+
+      <stage
+        id="structure_design"
+        type="outline"
+        required="true">
+        <input>requirements_map</input>
+        <output>artifact_outline</output>
+        <goal>
+          Produce the skeletal structure for the final artifact.
+        </goal>
+        <checks>
+          <check>Every requirement anchored to a section</check>
+        </checks>
+      </stage>
+
+      <stage
+        id="draft"
+        type="first_pass"
+        required="true">
+        <input>artifact_outline</input>
+        <output>artifact_draft</output>
+        <goal>
+          Fill the outline into a complete first draft at sovereign depth.
+        </goal>
+        <checks>
+          <check>Draft covers all outline nodes</check>
+        </checks>
+      </stage>
+
+      <stage
+        id="refine"
+        type="quality_pass"
+        required="true">
+        <input>artifact_draft</input>
+        <output>artifact_refined</output>
+        <goal>
+          Tighten, remove redundancy, sharpen language, enforce tokens.
+        </goal>
+        <checks>
+          <check>Clarity</check>
+          <check>No drift from intent</check>
+        </checks>
+      </stage>
+
+      <stage
+        id="finalize"
+        type="signoff"
+        required="true">
+        <input>artifact_refined</input>
+        <output>artifact_final</output>
+        <goal>
+          Emit final artifact and attach checksum and metadata.
+        </goal>
+        <checks>
+          <check>Success criteria satisfied</check>
+          <check>Checksum computed</check>
+        </checks>
+      </stage>
+
+    </stages>
+
+    <outputs>
+      <primary>{artifact_final}</primary>
+      <secondary>
+        <item>requirements_map</item>
+        <item>artifact_outline</item>
+        <item>artifact_refined</item>
+      </secondary>
+    </outputs>
+
+    <!-- Mirror hooks for this chain -->
+    <mirror_hooks>
+      <on_stage_start>log</on_stage_start>
+      <on_stage_end>log_and_grade</on_stage_end>
+    </mirror_hooks>
+
+  </sr8_chain>
+
+</sr8_schema>

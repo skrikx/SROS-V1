@@ -1,0 +1,102 @@
+<srx_runtime_schema
+  id="SRX.Runtime.Master.Schema.v1"
+  xmlns="https://sros.skrikx/schema/srx/runtime/v1"
+  version="1.0.0">
+
+  <meta>
+    <name>SRX Runtime Schema</name>
+    <description>
+      Schema defining how SRX agents, models, memory, and tools are registered
+      and executed inside SROS.
+    </description>
+    <owner>PlatXP</owner>
+    <plane>runtime</plane>
+  </meta>
+
+  <!-- Runtime root -->
+  <srx_runtime
+    id="{SRX.Runtime.Id}"
+    tenant="PlatXP"
+    env="prod">
+
+    <!-- Model configuration pool -->
+    <models>
+      <model
+        id="{Model.Id}"
+        provider="openai|google|local"
+        family="gpt|gemma|qwen|custom"
+        context_window="256000"
+        temperature="0.0-1.0"
+        top_p="0.1-1.0"
+        max_output_tokens="8000">
+        <label>{Friendly name}</label>
+        <usage>planner|executor|summarizer|critic|vision</usage>
+      </model>
+    </models>
+
+    <!-- Tool registry -->
+    <tools>
+      <tool
+        id="{Tool.Id}"
+        kind="http|db|filesystem|custom">
+        <name>{Tool name}</name>
+        <description>{What this tool is for}</description>
+        <endpoint>{URL or local ref}</endpoint>
+      </tool>
+    </tools>
+
+    <!-- Memory backends SRX can use -->
+    <memory_backends>
+      <backend
+        id="{Memory.Backend.Id}"
+        type="kv|vector|document|log"
+        persistence="ephemeral|durable">
+        <location>{db url or file path}</location>
+      </backend>
+    </memory_backends>
+
+    <!-- SRX agent definitions using this runtime -->
+    <agents>
+
+      <srx_agent
+        id="{SRX.Agent.Id}"
+        role="{Agent high level role}"
+        mode="Apex|Lite|Review"
+        srx_ace="true|false"
+        one_pass_lock="true|false"
+        drift_lock="true|false">
+
+        <identity>
+          <name>{Agent name}</name>
+          <purpose>{What this agent exists to do}</purpose>
+        </identity>
+
+        <model_ref id="{Model.Id}" />
+
+        <memory>
+          <short_term backend="{Memory.Backend.Id}" />
+          <long_term backend="{Memory.Backend.Id}" />
+          <sessions backend="{Memory.Backend.Id}" />
+        </memory>
+
+        <tool_refs>
+          <tool_ref id="{Tool.Id}" />
+        </tool_refs>
+
+        <policy>
+          <max_tokens_per_call>4000</max_tokens_per_call>
+          <max_calls_per_session>20</max_calls_per_session>
+        </policy>
+
+        <!-- Embedded SRXML system prompt template -->
+        <system_prompt_ref>
+          <file>schemas/prompts/{SRX.Agent.Id}.srxml</file>
+        </system_prompt_ref>
+
+      </srx_agent>
+
+    </agents>
+
+  </srx_runtime>
+
+</srx_runtime_schema>

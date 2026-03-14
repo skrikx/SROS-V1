@@ -1,0 +1,241 @@
+{
+  "timestamp": "2025-11-24T21:10:33.558820",
+  "duration_seconds": 176.360479,
+  "summary": {
+    "total": 28,
+    "passed": 21,
+    "failed": 5,
+    "skipped": 0,
+    "errors": 2
+  },
+  "suites": [
+    {
+      "suite": "ASI_INTEGRATION",
+      "tests": [
+        {
+          "file": "test_asi_integration.py",
+          "status": "pass",
+          "returncode": 0
+        }
+      ],
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 1
+    },
+    {
+      "suite": "KERNEL",
+      "tests": [
+        {
+          "file": "tests/test_kernel_boot.py",
+          "status": "pass",
+          "returncode": 0
+        },
+        {
+          "file": "tests/test_kernel_bootstrap.py",
+          "status": "pass",
+          "returncode": 0
+        },
+        {
+          "file": "tests/test_kernel_daemons.py",
+          "status": "fail",
+          "returncode": 1
+        },
+        {
+          "file": "tests/test_new_daemons.py",
+          "status": "fail",
+          "returncode": 1
+        }
+      ],
+      "passed": 2,
+      "failed": 2,
+      "skipped": 0,
+      "errors": 0
+    },
+    {
+      "suite": "RUNTIME",
+      "tests": [
+        {
+          "file": "tests/test_skrikx_integration.py",
+          "status": "fail",
+          "returncode": 1
+        },
+        {
+          "file": "tests/test_agent_foundry.py",
+          "status": "pass",
+          "returncode": 0
+        },
+        {
+          "file": "tests/test_model_router.py",
+          "status": "pass",
+          "returncode": 0
+        },
+        {
+          "file": "tests/test_model_adapters.py",
+          "status": "pass",
+          "returncode": 0
+        },
+        {
+          "file": "tests/test_adapter_registry.py",
+          "status": "pass",
+          "returncode": 0
+        },
+        {
+          "file": "tests/test_srx_router.py",
+          "status": "pass",
+          "returncode": 0
+        }
+      ],
+      "passed": 5,
+      "failed": 1,
+      "skipped": 0,
+      "errors": 0
+    },
+    {
+      "suite": "GOVERNANCE",
+      "tests": [
+        {
+          "file": "tests/test_governance_engines.py",
+          "status": "pass",
+          "returncode": 0
+        }
+      ],
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0
+    },
+    {
+      "suite": "MIRROROS",
+      "tests": [
+        {
+          "file": "tests/test_mirroros_engines.py",
+          "status": "pass",
+          "returncode": 0
+        },
+        {
+          "file": "tests/test_ouroboros.py",
+          "status": "pass",
+          "returncode": 0
+        },
+        {
+          "file": "tests/test_ouroboros_full_loop.py",
+          "status": "pass",
+          "returncode": 0
+        }
+      ],
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0
+    },
+    {
+      "suite": "INTEGRATION",
+      "tests": [
+        {
+          "file": "tests/test_nexus_core.py",
+          "status": "fail",
+          "returncode": 1
+        },
+        {
+          "file": "tests/test_nexus_api_v2.py",
+          "status": "pass",
+          "returncode": 0
+        },
+        {
+          "file": "tests/integration/test_gemini_integration.py",
+          "status": "pass",
+          "returncode": 0
+        },
+        {
+          "file": "tests/integration/test_agent_gemini.py",
+          "status": "pass",
+          "returncode": 0
+        }
+      ],
+      "passed": 3,
+      "failed": 1,
+      "skipped": 0,
+      "errors": 0
+    },
+    {
+      "suite": "SRXML",
+      "tests": [
+        {
+          "file": "tests/test_srxml_parser.py",
+          "status": "pass",
+          "returncode": 0
+        },
+        {
+          "file": "tests/test_srxml_validator.py",
+          "status": "pass",
+          "returncode": 0
+        }
+      ],
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0
+    },
+    {
+      "suite": "KNOWLEDGE",
+      "tests": [
+        {
+          "file": "tests/test_knowledge_ingestion.py",
+          "status": "pass",
+          "returncode": 0
+        },
+        {
+          "file": "tests/test_api_knowledge_endpoints.py",
+          "status": "pass",
+          "returncode": 0
+        }
+      ],
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0
+    },
+    {
+      "suite": "MEMORY",
+      "tests": [
+        {
+          "file": "tests/test_memory_backends.py",
+          "status": "pass",
+          "returncode": 0
+        }
+      ],
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 0
+    },
+    {
+      "suite": "EVOLUTION",
+      "tests": [
+        {
+          "file": "tests/test_evolution_targets.py",
+          "status": "fail",
+          "returncode": 2
+        },
+        {
+          "file": "tests/test_api_evolution_endpoint.py",
+          "status": "pass",
+          "returncode": 0
+        }
+      ],
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "errors": 0
+    },
+    {
+      "suite": "AGI_VALIDATION",
+      "tests": [],
+      "passed": 0,
+      "failed": 0,
+      "skipped": 0,
+      "errors": 1
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{"timestamp": 1764003503.938563, "event_type": "workflow.start", "payload": {"workflow_id": "test.workflow.1"}}
+{"timestamp": 1764003503.9392087, "event_type": "workflow.step", "payload": {"step_id": "step1", "agent": "agent.test"}}
+{"timestamp": 1764003504.046318, "event_type": "workflow.step", "payload": {"step_id": "step2", "agent": "agent.test"}}
+{"timestamp": 1764003504.1564703, "event_type": "workflow.end", "payload": {"workflow_id": "test.workflow.1"}}
+{"timestamp": 1764003559.911769, "event_type": "workflow.start", "payload": {"workflow_id": "test.workflow.1"}}
+{"timestamp": 1764003559.912236, "event_type": "workflow.step", "payload": {"step_id": "step1", "agent": "agent.test"}}
+{"timestamp": 1764003560.0266993, "event_type": "workflow.step", "payload": {"step_id": "step2", "agent": "agent.test"}}
+{"timestamp": 1764003560.1346772, "event_type": "workflow.end", "payload": {"workflow_id": "test.workflow.1"}}

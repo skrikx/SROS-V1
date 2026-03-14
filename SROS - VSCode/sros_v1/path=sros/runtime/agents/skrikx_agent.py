@@ -1,0 +1,2 @@
+content=# SELF-REWRITE VERIFIED
+```

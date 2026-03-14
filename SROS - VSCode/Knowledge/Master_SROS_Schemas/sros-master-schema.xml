@@ -1,0 +1,83 @@
+<sros_os_schema
+  id="SROS.OS.Master.Schema.v1"
+  xmlns="https://sros.skrikx/schema/sros/os/v1"
+  version="1.0.0">
+
+  <meta>
+    <name>SROS OS Schema</name>
+    <description>
+      Schema describing the operating system view of SROS: planes, daemons,
+      tenants, and resource wiring.
+    </description>
+    <owner>PlatXP</owner>
+    <plane>kernel</plane>
+  </meta>
+
+  <!-- SROS root -->
+  <sros_os
+    id="{SROS.Instance.Id}"
+    version="1.0.0"
+    tenant="PlatXP"
+    env="prod"
+    timezone="America/Toronto">
+
+    <!-- Logical planes -->
+    <planes>
+      <plane id="kernel">
+        <description>Low level daemons, core policies, security, telemetry.</description>
+      </plane>
+      <plane id="runtime">
+        <description>SRX runtimes, models, tools.</description>
+      </plane>
+      <plane id="governance">
+        <description>Policies, SLAs, permissions, tenants.</description>
+      </plane>
+      <plane id="mirroros">
+        <description>Witnessing, logs, narratives, lenses.</description>
+      </plane>
+    </planes>
+
+    <!-- Daemons inside each plane -->
+    <daemons>
+      <daemon
+        id="{Daemon.Id}"
+        plane="kernel|runtime|governance|mirroros">
+        <name>{Daemon name}</name>
+        <description>{What this daemon does}</description>
+
+        <config_ref>
+          <file>config/daemons/{Daemon.Id}.yaml</file>
+        </config_ref>
+
+        <resources>
+          <needs>
+            <needs_model>optional</needs_model>
+            <needs_memory>optional</needs_memory>
+            <needs_io>optional</needs_io>
+          </needs>
+        </resources>
+      </daemon>
+    </daemons>
+
+    <!-- Tenant and namespace layout -->
+    <tenants>
+      <tenant id="PlatXP">
+        <namespaces>
+          <namespace id="prod" />
+          <namespace id="stage" />
+          <namespace id="dev" />
+        </namespaces>
+      </tenant>
+    </tenants>
+
+    <!-- Links to other schemas -->
+    <integrations>
+      <sr8_schema_ref>schemas/sr8/SR8.Master.Compiler.Schema.v1.xml</sr8_schema_ref>
+      <sr9_schema_ref>schemas/sr9/SR9.Master.Orchestrator.Schema.v1.xml</sr9_schema_ref>
+      <srx_runtime_schema_ref>schemas/srx/SRX.Runtime.Master.Schema.v1.xml</srx_runtime_schema_ref>
+      <mirroros_schema_ref>schemas/mirroros/MirrorOS.Master.Schema.v1.xml</mirroros_schema_ref>
+    </integrations>
+
+  </sros_os>
+
+</sros_os_schema>
