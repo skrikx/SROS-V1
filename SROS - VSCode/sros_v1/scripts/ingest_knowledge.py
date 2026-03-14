@@ -24,15 +24,15 @@ def main():
     # We need to find the 'Knowledge' directory which is a sibling of 'sros_v1' or inside 'SROS - VSCode'
     
     # Current layout based on user info:
-    # c:\Users\hassm\OneDrive\Desktop\SROS\SROS - VSCode\sros_v1\scripts\ingest_knowledge.py
-    # c:\Users\hassm\OneDrive\Desktop\SROS\SROS - VSCode\Knowledge
+    # /opt/sros\SROS - VSCode\sros_v1\scripts\ingest_knowledge.py
+    # /opt/sros\SROS - VSCode\Knowledge
     
     base_dir = Path(__file__).parent.parent.parent # SROS - VSCode
     knowledge_dir = base_dir / "Knowledge" / "Master_SROS_Schemas"
     
     if not knowledge_dir.exists():
         # Fallback for different repo structure
-        knowledge_dir = Path("C:/Users/hassm/OneDrive/Desktop/SROS/SROS - VSCode/Knowledge/Master_SROS_Schemas")
+        knowledge_dir = Path("/opt/sros/SROS - VSCode/Knowledge/Master_SROS_Schemas")
     
     if not knowledge_dir.exists():
         logger.error(f"Knowledge directory not found at: {knowledge_dir}")

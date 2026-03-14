@@ -141,12 +141,12 @@
         }
       }
     },
-    "_source_file": "C:\\Users\\hassm\\OneDrive\\Desktop\\SROS\\SROS - VSCode\\Knowledge\\Master_SROS_Schemas\\mirroros-master-schema.xml",
+    "_source_file": "C:\\Users\\sros-operator\\OneDrive\\Desktop\\SROS\\SROS - VSCode\\Knowledge\\Master_SROS_Schemas\\mirroros-master-schema.xml",
     "_filename": "mirroros-master-schema.xml"
   },
   "metadata": {
     "type": "srxml_schema",
-    "source": "C:\\Users\\hassm\\OneDrive\\Desktop\\SROS\\SROS - VSCode\\Knowledge\\Master_SROS_Schemas\\mirroros-master-schema.xml",
+    "source": "C:\\Users\\sros-operator\\OneDrive\\Desktop\\SROS\\SROS - VSCode\\Knowledge\\Master_SROS_Schemas\\mirroros-master-schema.xml",
     "ingested_at": "now"
   }
 }

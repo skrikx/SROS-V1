@@ -1,1 +1,14 @@
 node_modules/
+
+# Auto-added by Sanitizer
+.env
+.env.local
+.pytest_cache/
+__pycache__/
+*.pyc
+*.log
+*.jsonl
+test_output.txt
+sros.egg-info/
+apex_commit.ps1
+manual_verify.py
