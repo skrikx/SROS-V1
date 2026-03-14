@@ -1,5 +1,0 @@
-<agent id="agent.test">
-    <name>Test Agent</name>
-    <description>A test agent.</description>
-    <model>gemini-pro</model>
-</agent>

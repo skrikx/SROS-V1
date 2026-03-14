@@ -1,0 +1,230 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.0.2, pluggy-1.6.0 -- C:\Users\hassm\AppData\Local\Programs\Python\Python311\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\hassm\OneDrive\Desktop\SROS\SROS-V1\sros_v1
+configfile: pyproject.toml
+plugins: anyio-4.12.1, asyncio-1.3.0
+asyncio: mode=Mode.STRICT, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 52 items
+
+sros_v1\tests\integration\test_agent_gemini.py::TestAgentGeminiIntegration::test_architect_with_gemini SKIPPED [  1%]
+sros_v1\tests\integration\test_agent_gemini.py::TestAgentGeminiIntegration::test_builder_with_gemini SKIPPED [  3%]
+sros_v1\tests\integration\test_agent_gemini.py::TestAgentGeminiIntegration::test_tester_with_gemini SKIPPED [  5%]
+sros_v1\tests\integration\test_agent_gemini.py::TestAgentGeminiIntegration::test_cost_tracking SKIPPED [  7%]
+sros_v1\tests\integration\test_agent_gemini.py::TestAgentGeminiIntegration::test_all_agents_sequential SKIPPED [  9%]
+sros_v1\tests\integration\test_gemini_integration.py::TestGeminiIntegration::test_real_generation SKIPPED [ 11%]
+sros_v1\tests\integration\test_gemini_integration.py::TestGeminiIntegration::test_cost_estimation SKIPPED [ 13%]
+sros_v1\tests\test_adapter_registry.py::TestAdapterRegistry::test_register_adapter PASSED [ 15%]
+sros_v1\tests\test_adapter_registry.py::TestAdapterRegistry::test_get_adapter PASSED [ 17%]
+sros_v1\tests\test_adapter_registry.py::TestAdapterRegistry::test_get_adapter_caching PASSED [ 19%]
+sros_v1\tests\test_adapter_registry.py::TestAdapterRegistry::test_get_adapter_tenant_override PASSED [ 21%]
+sros_v1\tests\test_adapter_registry.py::TestAdapterRegistry::test_get_adapter_fallback PASSED [ 23%]
+sros_v1\tests\test_adapter_registry.py::TestAdapterRegistry::test_get_adapter_not_found PASSED [ 25%]
+sros_v1\tests\test_adapter_registry.py::TestAdapterRegistry::test_list_adapters PASSED [ 26%]
+sros_v1\tests\test_adapter_registry.py::TestAdapterRegistry::test_clear_instances PASSED [ 28%]
+sros_v1\tests\test_kernel_boot.py::test_kernel_boot PASSED               [ 30%]
+sros_v1\tests\test_model_adapters.py::TestGeminiAdapter::test_initialize PASSED [ 32%]
+sros_v1\tests\test_model_adapters.py::TestGeminiAdapter::test_generate PASSED [ 34%]
+sros_v1\tests\test_model_adapters.py::TestGeminiAdapter::test_count_tokens PASSED [ 36%]
+sros_v1\tests\test_model_adapters.py::TestGeminiAdapter::test_estimate_cost PASSED [ 38%]
+sros_v1\tests\test_model_adapters.py::TestGeminiAdapter::test_get_metadata PASSED [ 40%]
+sros_v1\tests\test_model_adapters.py::TestOpenAIAdapter::test_initialize PASSED [ 42%]
+sros_v1\tests\test_model_adapters.py::TestOpenAIAdapter::test_generate PASSED [ 44%]
+sros_v1\tests\test_model_adapters.py::TestOpenAIAdapter::test_get_metadata PASSED [ 46%]
+sros_v1\tests\test_model_adapters.py::TestLocalLLMAdapter::test_initialize PASSED [ 48%]
+sros_v1\tests\test_model_adapters.py::TestLocalLLMAdapter::test_generate PASSED [ 50%]
+sros_v1\tests\test_model_adapters.py::TestLocalLLMAdapter::test_get_metadata PASSED [ 51%]
+sros_v1\tests\test_nexus_core.py::test_nexus_demo_command FAILED         [ 53%]
+sros_v1\tests\test_ouroboros.py::TestOuroborosLoop::test_initialization PASSED [ 55%]
+sros_v1\tests\test_ouroboros.py::TestOuroborosLoop::test_safety_constraints PASSED [ 57%]
+sros_v1\tests\test_ouroboros.py::TestOuroborosLoop::test_emergency_stop PASSED [ 59%]
+sros_v1\tests\test_ouroboros.py::TestOuroborosLoop::test_get_status PASSED [ 61%]
+sros_v1\tests\test_ouroboros.py::TestSafeguards::test_check_proposal_allowed PASSED [ 63%]
+sros_v1\tests\test_ouroboros.py::TestSafeguards::test_check_too_many_files PASSED [ 65%]
+sros_v1\tests\test_ouroboros.py::TestSafeguards::test_check_forbidden_target PASSED [ 67%]
+sros_v1\tests\test_ouroboros.py::TestSafeguards::test_emergency_stop PASSED [ 69%]
+sros_v1\tests\test_sovereign_directive.py::TestSovereignDirective::test_allow_low_risk PASSED [ 71%]
+sros_v1\tests\test_sovereign_directive.py::TestSovereignDirective::test_block_forbidden_scope PASSED [ 73%]
+sros_v1\tests\test_sovereign_directive.py::TestSovereignDirective::test_flag_high_risk_modification PASSED [ 75%]
+sros_v1\tests\test_sovereign_directive.py::TestSovereignDirective::test_audit_logging PASSED [ 76%]
+sros_v1\tests\test_srxml_parser.py::TestSRXMLParser::test_parse_workflow_to_dict FAILED [ 78%]
+sros_v1\tests\test_srxml_parser.py::TestSRXMLParser::test_parse_agent_to_dict FAILED [ 80%]
+sros_v1\tests\test_srxml_parser.py::TestSRXMLParser::test_parse_workflow_to_object FAILED [ 82%]
+sros_v1\tests\test_srxml_parser.py::TestSRXMLParser::test_parse_with_locks FAILED [ 84%]
+sros_v1\tests\test_srxml_parser.py::TestSRXMLParser::test_parse_nonexistent_file PASSED [ 86%]
+sros_v1\tests\test_srxml_parser.py::TestSRXMLParser::test_parse_unknown_document_type PASSED [ 88%]
+sros_v1\tests\test_srxml_validator.py::TestSRXMLValidator::test_validate_valid_agent PASSED [ 90%]
+sros_v1\tests\test_srxml_validator.py::TestSRXMLValidator::test_validate_agent_missing_id PASSED [ 92%]
+sros_v1\tests\test_srxml_validator.py::TestSRXMLValidator::test_validate_agent_missing_role PASSED [ 94%]
+sros_v1\tests\test_srxml_validator.py::TestSRXMLValidator::test_validate_workflow_no_steps PASSED [ 96%]
+sros_v1\tests\test_srxml_validator.py::TestSRXMLValidator::test_validate_workflow_duplicate_orders PASSED [ 98%]
+sros_v1\tests\test_srxml_validator.py::TestSRXMLValidator::test_validate_seed_lock_without_seed PASSED [100%]
+
+================================== FAILURES ===================================
+___________________________ test_nexus_demo_command ___________________________
+
+    def test_nexus_demo_command():
+        """
+        Verifies that Nexus can trigger a demo command via the Kernel.
+        """
+        kernel = kernel_bootstrap.boot()
+        nexus = NexusCore(kernel)
+    
+>       result = nexus.run_command("run_demo")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sros_v1\tests\test_nexus_core.py:12: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <sros.apps.sros_web_nexus.nexus_core.NexusCore object at 0x000001FACCFFDB10>
+command = 'run_demo', payload = None
+
+    def run_command(self, command: str, payload: Dict[str, Any] = None) -> Dict[str, Any]:
+        """
+        Executes a Nexus command.
+        """
+        print(f"[Nexus] Executing: {command}")
+    
+        if command == "run_demo":
+            # Trigger the demo workflow
+            from ...runtime.workflow_engine import WorkflowEngine
+>           engine = WorkflowEngine(self.kernel)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           TypeError: WorkflowEngine.__init__() missing 1 required positional argument: 'witness'
+
+sros_v1\sros\apps\sros_web_nexus\nexus_core.py:20: TypeError
+---------------------------- Captured stdout call -----------------------------
+Booting SROS Kernel (config=sros_config.yml)...
+Starting Kernel Daemons...
+  [OK] heartbeat
+SROS Kernel Online.
+[Nexus] Executing: run_demo
+_________________ TestSRXMLParser.test_parse_workflow_to_dict _________________
+
+self = <test_srxml_parser.TestSRXMLParser object at 0x000001FACCFDC850>
+parser = <sros.srxml.parser.SRXMLParser object at 0x000001FACD04C490>
+fixtures_dir = WindowsPath('C:/Users/hassm/OneDrive/Desktop/SROS/SROS-V1/sros_v1/fixtures')
+
+    def test_parse_workflow_to_dict(self, parser, fixtures_dir):
+        """Test parsing workflow to dictionary."""
+        workflow_path = fixtures_dir / "sample_workflow.srxml"
+>       result = parser.parse(str(workflow_path))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sros_v1\tests\test_srxml_parser.py:28: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <sros.srxml.parser.SRXMLParser object at 0x000001FACD04C490>
+file_path = 'C:\\Users\\hassm\\OneDrive\\Desktop\\SROS\\SROS-V1\\sros_v1\\fixtures\\sample_workflow.srxml'
+
+    def parse(self, file_path: str) -> Dict[str, Any]:
+        """
+        Parses an SRXML file and returns a dictionary representation.
+        """
+        if not os.path.exists(file_path):
+>           raise FileNotFoundError(f"SRXML file not found: {file_path}")
+E           FileNotFoundError: SRXML file not found: C:\Users\hassm\OneDrive\Desktop\SROS\SROS-V1\sros_v1\fixtures\sample_workflow.srxml
+
+sros_v1\sros\srxml\parser.py:15: FileNotFoundError
+__________________ TestSRXMLParser.test_parse_agent_to_dict ___________________
+
+self = <test_srxml_parser.TestSRXMLParser object at 0x000001FACCFDD050>
+parser = <sros.srxml.parser.SRXMLParser object at 0x000001FACD05F7D0>
+fixtures_dir = WindowsPath('C:/Users/hassm/OneDrive/Desktop/SROS/SROS-V1/sros_v1/fixtures')
+
+    def test_parse_agent_to_dict(self, parser, fixtures_dir):
+        """Test parsing agent to dictionary."""
+        agent_path = fixtures_dir / "sample_agent_prompt.srxml"
+>       result = parser.parse(str(agent_path))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sros_v1\tests\test_srxml_parser.py:37: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <sros.srxml.parser.SRXMLParser object at 0x000001FACD05F7D0>
+file_path = 'C:\\Users\\hassm\\OneDrive\\Desktop\\SROS\\SROS-V1\\sros_v1\\fixtures\\sample_agent_prompt.srxml'
+
+    def parse(self, file_path: str) -> Dict[str, Any]:
+        """
+        Parses an SRXML file and returns a dictionary representation.
+        """
+        if not os.path.exists(file_path):
+>           raise FileNotFoundError(f"SRXML file not found: {file_path}")
+E           FileNotFoundError: SRXML file not found: C:\Users\hassm\OneDrive\Desktop\SROS\SROS-V1\sros_v1\fixtures\sample_agent_prompt.srxml
+
+sros_v1\sros\srxml\parser.py:15: FileNotFoundError
+________________ TestSRXMLParser.test_parse_workflow_to_object ________________
+
+self = <test_srxml_parser.TestSRXMLParser object at 0x000001FACCFDD710>
+parser = <sros.srxml.parser.SRXMLParser object at 0x000001FACD052290>
+fixtures_dir = WindowsPath('C:/Users/hassm/OneDrive/Desktop/SROS/SROS-V1/sros_v1/fixtures')
+
+    def test_parse_workflow_to_object(self, parser, fixtures_dir):
+        """Test parsing workflow to typed object."""
+        workflow_path = fixtures_dir / "sample_workflow.srxml"
+>       workflow = parser.parse_to_object(str(workflow_path))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sros_v1\tests\test_srxml_parser.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+sros_v1\sros\srxml\parser.py:31: in parse_to_object
+    data = self.parse(file_path)
+           ^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <sros.srxml.parser.SRXMLParser object at 0x000001FACD052290>
+file_path = 'C:\\Users\\hassm\\OneDrive\\Desktop\\SROS\\SROS-V1\\sros_v1\\fixtures\\sample_workflow.srxml'
+
+    def parse(self, file_path: str) -> Dict[str, Any]:
+        """
+        Parses an SRXML file and returns a dictionary representation.
+        """
+        if not os.path.exists(file_path):
+>           raise FileNotFoundError(f"SRXML file not found: {file_path}")
+E           FileNotFoundError: SRXML file not found: C:\Users\hassm\OneDrive\Desktop\SROS\SROS-V1\sros_v1\fixtures\sample_workflow.srxml
+
+sros_v1\sros\srxml\parser.py:15: FileNotFoundError
+____________________ TestSRXMLParser.test_parse_with_locks ____________________
+
+self = <test_srxml_parser.TestSRXMLParser object at 0x000001FACCFDDE50>
+parser = <sros.srxml.parser.SRXMLParser object at 0x000001FACD047510>
+fixtures_dir = WindowsPath('C:/Users/hassm/OneDrive/Desktop/SROS/SROS-V1/sros_v1/fixtures')
+
+    def test_parse_with_locks(self, parser, fixtures_dir):
+        """Test parsing with execution locks."""
+        workflow_path = fixtures_dir / "sample_workflow.srxml"
+>       workflow = parser.parse_to_object(str(workflow_path))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sros_v1\tests\test_srxml_parser.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+sros_v1\sros\srxml\parser.py:31: in parse_to_object
+    data = self.parse(file_path)
+           ^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <sros.srxml.parser.SRXMLParser object at 0x000001FACD047510>
+file_path = 'C:\\Users\\hassm\\OneDrive\\Desktop\\SROS\\SROS-V1\\sros_v1\\fixtures\\sample_workflow.srxml'
+
+    def parse(self, file_path: str) -> Dict[str, Any]:
+        """
+        Parses an SRXML file and returns a dictionary representation.
+        """
+        if not os.path.exists(file_path):
+>           raise FileNotFoundError(f"SRXML file not found: {file_path}")
+E           FileNotFoundError: SRXML file not found: C:\Users\hassm\OneDrive\Desktop\SROS\SROS-V1\sros_v1\fixtures\sample_workflow.srxml
+
+sros_v1\sros\srxml\parser.py:15: FileNotFoundError
+============================== warnings summary ===============================
+sros_v1\sros\runtime\agents\tester_agent.py:13
+  C:\Users\hassm\OneDrive\Desktop\SROS\SROS-V1\sros_v1\sros\runtime\agents\tester_agent.py:13: PytestCollectionWarning: cannot collect test class 'TesterAgent' because it has a __init__ constructor (from: tests/integration/test_agent_gemini.py)
+    class TesterAgent(AgentBase):
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED sros_v1\tests\test_nexus_core.py::test_nexus_demo_command - TypeError:...
+FAILED sros_v1\tests\test_srxml_parser.py::TestSRXMLParser::test_parse_workflow_to_dict
+FAILED sros_v1\tests\test_srxml_parser.py::TestSRXMLParser::test_parse_agent_to_dict
+FAILED sros_v1\tests\test_srxml_parser.py::TestSRXMLParser::test_parse_workflow_to_object
+FAILED sros_v1\tests\test_srxml_parser.py::TestSRXMLParser::test_parse_with_locks
+============= 5 failed, 40 passed, 7 skipped, 1 warning in 1.27s ==============

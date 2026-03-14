@@ -19,8 +19,7 @@ class TestSRXMLParser:
     
     @pytest.fixture
     def fixtures_dir(self):
-        """Get fixtures directory."""
-        return Path(__file__).parent.parent / "fixtures"
+        return Path(__file__).parent / "fixtures"
     
     def test_parse_workflow_to_dict(self, parser, fixtures_dir):
         """Test parsing workflow to dictionary."""

@@ -17,7 +17,9 @@ class NexusCore:
         if command == "run_demo":
             # Trigger the demo workflow
             from ...runtime.workflow_engine import WorkflowEngine
-            engine = WorkflowEngine(self.kernel)
+            from ...mirroros.witness import Witness
+            witness = Witness([])
+            engine = WorkflowEngine(self.kernel.event_bus, witness)
             # engine.run_file("...") # TODO: Point to actual file
             return {"status": "success", "message": "Demo started"}
             

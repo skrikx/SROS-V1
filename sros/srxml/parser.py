@@ -61,9 +61,9 @@ class SRXMLParser:
                 inputs=self._extract_items(data.get('inputs', {})),
                 objectives=self._extract_items(data.get('objectives', {})),
             )
-        elif tag == 'sr8_workflow':
+        elif tag in ('sr8_workflow', 'workflow'):
             identity_data = data.get('identity', {})
-            workflow_data = data.get('workflow', {})
+            workflow_data = data.get('workflow', data)
             steps_data = workflow_data.get('step', [])
             if not isinstance(steps_data, list):
                 steps_data = [steps_data]

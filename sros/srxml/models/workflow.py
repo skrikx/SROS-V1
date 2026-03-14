@@ -34,8 +34,8 @@ class SR8Workflow(SRXMLBase):
     
     Represents an SRXML workflow document with steps, checks, and output contracts.
     """
-    role: str
-    mode: str
+    role: str = ""
+    mode: str = ""
     identity: WorkflowIdentity = field(default_factory=lambda: WorkflowIdentity("", ""))
     context: List[str] = field(default_factory=list)
     inputs: List[str] = field(default_factory=list)

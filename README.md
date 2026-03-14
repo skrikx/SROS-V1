@@ -50,7 +50,8 @@
 
 ```bash
 # Clone and install
-cd sros-v1-alpha
+git clone <repository_url>
+cd SROS-V1
 pip install -e .
 ```
 
@@ -66,11 +67,7 @@ sros init
 sros run-demo
 ```
 
-### Verify Installation
 
-```bash
-sros status system
-```
 
 ---
 
@@ -93,7 +90,7 @@ sros status system
 ### Run All Tests
 
 ```bash
-python run_all_tests.py
+pytest
 ```
 
 ### Run Specific Tests
@@ -107,39 +104,16 @@ pytest tests/test_srxml_parser.py
 pytest tests/integration/
 ```
 
-### Stress Testing
-
-```bash
-sros workflow run examples/complex_feature_workflow.srxml
-```
-
 ---
 
 ## 🔧 CLI Commands
 
 ```bash
-# System
-sros init                    # Initialize SROS
-sros status system           # Check system status
-sros run-demo                # Run demo workflow
+# Core Config
+sros init                    # Initialize SROS config
 
-# Kernel
-sros kernel boot             # Boot the kernel
-sros kernel status           # Kernel status
-sros kernel shutdown         # Shutdown kernel
-
-# Agents
-sros agent list              # List available agents
-sros agent run architect "Analyze the system"
-
-# Workflows
-sros workflow list           # List workflows
-sros workflow run workflow.srxml
-
-# Memory
-sros memory read --layer short
-sros memory write "data" --layer long
-sros memory stats
+# Demo
+sros run-demo                # Run the SROS sample workflow
 ```
 
 ---
@@ -167,7 +141,7 @@ Edit `sros_config.yml` for system-wide settings.
 ## 📁 Project Structure
 
 ```
-sros-v1-alpha/
+.
 ├── sros/                    # Main package
 │   ├── kernel/              # Plane 1: Core system
 │   ├── runtime/             # Plane 2: Agent execution

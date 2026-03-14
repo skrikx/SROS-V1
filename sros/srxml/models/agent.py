@@ -23,8 +23,8 @@ class SRXAgent(SRXMLBase):
     
     Represents an SRXML agent document with role, mode, identity, and objectives.
     """
-    role: str
-    mode: str  # PLANNING, EXECUTION, VERIFICATION, etc.
+    role: str = ""
+    mode: str = ""  # PLANNING, EXECUTION, VERIFICATION, etc.
     identity: AgentIdentity = field(default_factory=lambda: AgentIdentity("", ""))
     inputs: List[str] = field(default_factory=list)
     objectives: List[str] = field(default_factory=list)

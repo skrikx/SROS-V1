@@ -43,7 +43,45 @@ class EvolutionProposal:
     target_files: List[str] = field(default_factory=list)
     target_modules: List[str] = field(default_factory=list)
     
-    
+    # State
+    enabled: bool = True
+    requires_approval: bool = False
+    approved: bool = False
+    reviewer: str = ""
+    simulation_results: Dict[str, Any] = field(default_factory=dict)
+
+
+class OuroborosLoop:
+    """
+    The engine that powers the Ouroboros evolution cycle.
+    """
+    def __init__(
+        self,
+        config: Dict[str, Any],
+        observer=None,
+        analyzer=None,
+        proposer=None,
+        simulator=None,
+        reviewer=None,
+        recorder=None,
+        directive=None
+    ):
+        self.config = config or {}
+        self.enabled = self.config.get("enabled", True)
+        self.max_concurrent_proposals = self.config.get("max_concurrent_proposals", 5)
+        self.require_human_approval = self.config.get("require_human_approval", True)
+        
+        self.observer = observer
+        self.analyzer = analyzer
+        self.proposer = proposer
+        self.simulator = simulator
+        self.reviewer = reviewer
+        self.recorder = recorder
+        self.directive = directive
+        
+        self.active_proposals: List[EvolutionProposal] = []
+        self.proposal_history: List[EvolutionProposal] = []
+
     def run_cycle(self) -> List[EvolutionProposal]:
         """
         Run one complete evolution cycle.
@@ -115,13 +153,19 @@ class EvolutionProposal:
         # Governance Check: Filter proposals via Sovereign Directive
         allowed_proposals = []
         for p in proposals:
+            if not self.directive:
+                # If no directive, assume blocked/requires_approval for safety
+                p.requires_approval = True
+                allowed_proposals.append(p)
+                continue
+                
             decision = self.directive.evaluate_action(
-                ActionType.EVOLVE_STRUCTURE,
+                "EVOLVE_STRUCTURE", # Fixed hardcoded ActionType enum missing import
                 {"target": p.target_files, "reason": p.rationale}
             )
             
             if decision.allowed:
-                if decision.requires_hassan_approval:
+                if getattr(decision, "requires_hassan_approval", False):
                     p.requires_approval = True
                     logger.info(f"Proposal {p.id} flagged for Sovereign Approval: {decision.reason}")
                 allowed_proposals.append(p)

@@ -1,0 +1,8 @@
+<srx_agent_prompt id="agent.test" version="1.0" tenant="tests">
+    <role>tester</role>
+    <mode>test</mode>
+    <identity>
+        <system_name>Test Agent</system_name>
+        <purpose>Testing parsing</purpose>
+    </identity>
+</srx_agent_prompt>
