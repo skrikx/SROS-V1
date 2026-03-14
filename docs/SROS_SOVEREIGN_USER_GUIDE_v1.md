@@ -1,223 +1,341 @@
-# SROS v1: Sovereign User Guide
+# SROS v1: Apex Grade Sovereign User Guide
 
 > **Document Classification**: Sovereign Grade
-> **Subject**: SROS v1 Official Operations, Architecture, and Technical Manual
+> **Subject**: The Definitive SROS v1 Operations, Architecture, and Technical Manual
 > **Author**: Antigravity (Sovereign SROS Builder Agent)
 > **Version**: 1.0.0
+> **Scope**: Encompasses all technical, architectural, operational, and policy domains.
 
 ---
 
 ## 📜 Table of Contents
-1. [Introduction to Sovereign Runtime Operating System (SROS)](#1-introduction-to-sovereign-runtime-operating-system-sros)
-2. [The Four-Plane Architecture](#2-the-four-plane-architecture)
-3. [Domain 1: Kernel (Plane 1)](#3-domain-1-kernel-plane-1)
-4. [Domain 2: Runtime & Agents (Plane 2)](#4-domain-2-runtime--agents-plane-2)
-5. [Domain 3: Governance & Sovereign Directives (Plane 3)](#5-domain-3-governance--sovereign-directives-plane-3)
-6. [Domain 4: MirrorOS & Observability (Plane 4)](#6-domain-4-mirroros--observability-plane-4)
-7. [The Data Fabric: Memory & Persistence](#7-the-data-fabric-memory--persistence)
-8. [The Semantic Schema: SRXML](#8-the-semantic-schema-srxml)
-9. [Self-Evolution: Ouroboros Engine](#9-self-evolution-ouroboros-engine)
-10. [Operational Guide: Installation, CLI, & Nexus API](#10-operational-guide-installation-cli--nexus-api)
-11. [Developer Guide: Extending SROS](#11-developer-guide-extending-sros)
-12. [Glossary of Terms](#12-glossary-of-terms)
+
+1. [Introduction to the Sovereign Runtime Operating System (SROS)](#1-introduction-to-the-sovereign-runtime-operating-system-sros)
+2. [The Core Philosophy of Sovereignty](#2-the-core-philosophy-of-sovereignty)
+3. [The Four-Plane Architecture: A Deep Dive](#3-the-four-plane-architecture-a-deep-dive)
+    - [3.1 Plane 1: Kernel (The Foundation)](#31-plane-1-kernel-the-foundation)
+    - [3.2 Plane 2: Runtime (The Execution Hub)](#32-plane-2-runtime-the-execution-hub)
+    - [3.3 Plane 3: Governance (The Absolute Authority)](#33-plane-3-governance-the-absolute-authority)
+    - [3.4 Plane 4: MirrorOS (The Omniscient Observer)](#34-plane-4-mirroros-the-omniscient-observer)
+4. [The Data Fabric: Multi-Tiered Memory & Persistence](#4-the-data-fabric-multi-tiered-memory--persistence)
+5. [The Semantic Schema: SRXML & Determinism](#5-the-semantic-schema-srxml--determinism)
+6. [Self-Evolution: The Ouroboros Engine](#6-self-evolution-the-ouroboros-engine)
+7. [Operational Guide: Installation, Configuration, and CLI](#7-operational-guide-installation-configuration-and-cli)
+8. [Developer Guide: Extending and Customizing SROS](#8-developer-guide-extending-and-customizing-sros)
+9. [Advanced Troubleshooting and System Recovery](#9-advanced-troubleshooting-and-system-recovery)
+10. [Glossary of Terms](#10-glossary-of-terms)
 
 ---
 
-## 1. Introduction to Sovereign Runtime Operating System (SROS)
+## 1. Introduction to the Sovereign Runtime Operating System (SROS)
 
-The Sovereign Runtime Operating System (SROS v1) is a revolutionary AI-native orchestration environment designed to elevate Large Language Models (LLMs) from reactive chatbots into sovereign, autonomous, and governed agents. 
+The Sovereign Runtime Operating System (SROS v1) is not merely a framework or a library for making REST API calls to Large Language Models. It is a revolutionary, AI-native virtualization environment designed to elevate raw, non-deterministic AI generation into Sovereign, autonomous, and strictly governed agentic workflows. 
 
-SROS introduces standard operating system paradigms—such as kernels, process isolation, memory management, and hardware abstraction—into the cognitive space. By wrapping raw AI generation within a strict, verifiability-first architecture, SROS guarantees determinism, safety, and continuous self-evolution.
+Traditional AI applications suffer from severe architectural flaws: they lack deterministic execution bounds, struggle with multi-agent state persistence, and rely on fragile "prompt engineering" to prevent malicious behavior. SROS completely reimagines this paradigm by applying standard operating system principles—such as kernels, process isolation, memory management, and hardware abstraction—directly into the cognitive space.
 
-### 1.1 Core Tenets
-- **Receipts-First Validity**: No automated action is considered complete without a cryptographically sound or test-driven receipt.
-- **Determinism Sacred**: All execution bounds are strict, ensuring identical AI inputs yield conceptually identical systemic states.
-- **Sovereign Governance**: No action bypasses hardcoded policy limits, enforcing total system alignment.
-- **Truth from Code**: All documentation and system outputs are strictly derived from live execution paths, never from stagnant templates.
+By wrapping AI execution within a strict, verifiability-first architecture, SROS guarantees determinism, absolute safety, and the ability for continuous, supervised self-evolution. SROS owns the memory, the governance, and the orchestration; the AI models themselves are merely interchangeable adapters plugged into the Sovereign engine.
 
 ---
 
-## 2. The Four-Plane Architecture
+## 2. The Core Philosophy of Sovereignty
 
-SROS completely decouples system components into a strictly layered hierarchy. This guarantees high cohesion, low coupling, and the prevention of catastrophic AI drift.
+SROS v1 is built upon a foundation of unyielding, non-negotiable tenets. These tenets are not suggestions; they are the physical laws of the system.
 
-1. **Plane 1 (Kernel)**: The foundational backbone managing event routing, configuration, and fundamental daemons.
-2. **Plane 2 (Runtime)**: The execution environment where Agents and Workflows operate, consume resources, and generate artifacts.
-3. **Plane 3 (Governance)**: The absolute authority. It sits synchronously above Plane 2, evaluating all proposed LLM actions against defined SRXML policies.
-4. **Plane 4 (MirrorOS)**: The asynchronous observability layer that witnesses, traces, and stores every operation without blocking the Kernel.
+### 2.1 Receipts-First Validity
+No automated action, mutation, or configuration change within SROS is considered legitimate or complete without a cryptographically sound or test-driven receipt. If an agent refactors code, it must procure a `pytest` receipt proving determinism. If the Governance plane blocks an action, it must procure a JSONL audit trace. Claims of success without receipts are classified as hallucinations and are rolled back.
 
----
+### 2.2 Determinism Sacred
+LLMs are inherently non-deterministic. SROS forces them into deterministic bounds. All execution environments, agent roles, memory boundaries, and parsed variables must remain consistent. If identical AI inputs and architectural states are provided to the Kernel, the resulting systemic behavior and policy execution must be identical. There is no tolerance for mixed execution modes or silent semantic drift.
 
-## 3. Domain 1: Kernel (Plane 1)
+### 2.3 Sovereign Governance
+No action—whether initiated by a human operator, a scheduled daemon, or a Prime Agent—bypasses the Governance plane. The Policy Engine sits synchronously above all execution. It enforces hardcoded limits, budget constraints, and risk thresholds before any computational cycles are wasted.
 
-The SROS Kernel serves as the bedrock of the entire system. Without the Kernel, the Runtime has no reality.
-
-### 3.1 Kernel Boot Sequence (`kernel_bootstrap.py`)
-When triggered, the Kernel explicitly boots according to the `sros_config.yml` configuration standard.
-1. **Event Bus Initialization**: Boots a lightweight, asynchronous pub-sub message router to coordinate intra-plane communications.
-2. **Memory Mount**: Attaches the four primary memory tiers (Short-term, Long-term, Codex, Vector) into a unified `MemoryRouter`.
-3. **Daemon Registry**: Initializes background systemic processes, starting with the core `HeartbeatDaemon` to ensure liveness.
-
-### 3.2 Event Bus Mechanics
-The Kernel avoids hard-linked Python calls between planes, utilizing an `EventBus`. This decouples the AI agents from the systems monitoring them. An agent publishes a generic `agent.action_proposed` event, which the Governance plane intercepts, approves, or denies entirely via the bus infrastructure.
+### 2.4 Truth from Code
+Documentation, policies, and systemic state are never abstract concepts existing outside the system. They are strictly derived from live execution paths. SROS demands that the "Truth" of the system is what is presently compiling and passing validations, never what is written in a stagnant markdown template.
 
 ---
 
-## 4. Domain 2: Runtime & Agents (Plane 2)
+## 3. The Four-Plane Architecture: A Deep Dive
 
-The Runtime is the user-space where cognitive processes occur. It is the only plane that interacts with LLMs via out-of-band `adapters`.
+SROS completely decouples system components into a strictly layered hierarchy. This guarantees high cohesion, low coupling, and the prevention of catastrophic AI drift. The architecture is segregated into four primary planes: Kernel, Runtime, Governance, and MirrorOS.
 
-### 4.1 Agent Typologies (`AgentBase`)
-SROS comes pre-equipped with foundational Agent topologies:
-- **ArchitectAgent**: Responsible for scoping system design, proposing broad schemas, and building implementation plans. Focuses on structural integrity.
-- **BuilderAgent**: An execution-focused agent. Writes, refactors, and deploys actual code iterations bounded by SRXML templates.
-- **TesterAgent**: The quality-assurance oracle. Writes and executes `pytest` harnesses against code generated by the Builder to procure receipts.
-- **SkrikxAgent (Prime)**: The master orchestrator, capable of observing the lower agents and dispatching workflows.
+### 3.1 Plane 1: Kernel (The Foundation)
 
-All agents inherit from `AgentBase`, standardizing `act()`, `think()`, and tool-dispatching sequences.
+**Location:** `sros/kernel/`
 
-### 4.2 Workflow Engine
-The `WorkflowEngine` consumes `SR8Workflow` models. It guarantees that steps are evaluated sequentially. A workflow can orchestrate multiple agents sequentially, handing off conversational contexts natively.
+The Kernel plane serves as the absolute bedrock of the entire SROS ecosystem. Everything else—from the most complex LLM inference to the simplest logging command—is a client of the Kernel. Without the Kernel, the Runtime has no reality.
 
-### 4.3 Model Adapters
-LLM APIs are abstracted behind the `AdapterRegistry`. You can seamlessly shift a running instance from OpenAI (`gpt-4o`) to Google (`gemini-1.5-pro`) to local inferences without refactoring any runtime code. 
+#### 3.1.1 Kernel Boot Sequence (`kernel_bootstrap.py`)
+When the SROS binary is invoked, the Kernel boot sequence explicitly follows the configuration defined in `sros_config.yml`.
+1. **Event Bus Initialization**: The system boots a lightweight, hyper-fast asynchronous pub-sub message router. This `EventBus` handles all intra-plane communications, ensuring that no plane tightly couples to another via direct Python class instantiations.
+2. **Memory Router Mount**: Attaches the defined memory tiers (Short-term, Long-term, Codex, Vector) into a single unified `MemoryRouter`, preparing the data fabric for agent consumption.
+3. **Daemon Registry Alignment**: Initializes background systemic processes, starting with the core `HeartbeatDaemon` to ensure liveness and system health tracking.
+4. **State Finalization**: The `KernelState` object locks in the active topology, broadcasting the `kernel.ready` event across the bus.
 
----
-
-## 5. Domain 3: Governance & Sovereign Directives (Plane 3)
-
-SROS does not rely on "prompt engineering" to keep models safe. SROS relies on synchronous execution locks enforced by Plane 3.
-
-### 5.1 The Policy Engine
-The `PolicyEngine` listens for `agent.action_proposed` events. It parses the proposed action against all active SRXML `GovernancePolicy` rulesides. A policy might declare:
-- **No File Writes to `kernel/`**: Instantly blocking a malicious LLM mutation.
-- **Max Cost Constraints**: Tracked by the `CostTracker`, blocking actions if the API budget is breached.
-
-### 5.2 Sovereign Directives
-The `SovereignDirective` system ranks actions by risk.
-- **Low Risk** (e.g., Read file): Auto-allowed, logged to audit.
-- **High Risk** (e.g., Code Execution, Destructive Deletes): Generates a lock requiring explicit Hassan (Operator) intervention or an advanced cryptographic receipt.
+#### 3.1.2 The Event Bus Protocol
+The `EventBus` is the central nervous system. When the Runtime plane wishes to execute an agent, it publishes an `agent.action_proposed` event. It does not call the agent directly. The Governance plane subscribes to this topic, intercepts the event, evaluates the action against the current XML policy trees, and then either publishes a `policy.action_allowed` or `policy.action_denied` event back to the bus.
 
 ---
 
-## 6. Domain 4: MirrorOS & Observability (Plane 4)
+### 3.2 Plane 2: Runtime (The Execution Hub)
 
-MirrorOS establishes absolute observability and non-repudiation.
+**Location:** `sros/runtime/`
 
-### 6.1 The Witness (`witness.py`)
-While Governance acts *before* the action (synchronous prevention), the Witness acts *after* the action (asynchronous recording). Every `publish()` on the Event Bus is mirrored in JSONL format to `sros_traces.jsonl`. 
+The Runtime is the user-space where cognitive processes occur. It is the only plane permitted to interact with external LLMs via out-of-band `adapters`. This plane acts as the physics engine for the AI world.
 
-### 6.2 Drift Detection
-MirrorOS monitors the divergence between internal states and outputted realities. The `DriftDetector` logs discrepancies between expected codebase outputs and external runtime configurations. If config drift exceeds thresholds (e.g. invalid dataclass mappings), the drift lock enforces a system rollback.
+#### 3.2.1 Agent Typologies (`AgentBase`)
+SROS comes pre-equipped with foundational Agent topologies, all inheriting from base abstractions that enforce strict state lifecycles:
+- **ArchitectAgent**: Responsible for scoping system design, proposing broad schemas, performing root-cause analysis on systemic failures, and building implementation plans. Focuses on structural integrity over code syntax.
+- **BuilderAgent**: An execution-focused engine. Writes, refactors, and deploys actual code iterations bounded strictly by SRXML templates.
+- **TesterAgent**: The quality-assurance oracle. Writes and executes `pytest` harnesses against the code generated by the Builder. It procures the receipts required by the One Pass Lock mandate.
+- **SkrikxAgent (Prime)**: The master orchestrator representing the Sovereign Prime interface, capable of observing the lower agents, re-routing context, and dispatching complex sub-workflows.
 
----
+#### 3.2.2 Workflow Orchestration (`workflow_engine.py`)
+The `WorkflowEngine` consumes `SR8Workflow` XML models. It guarantees that multi-agent steps are evaluated sequentially or conditionally based on the DAG (Directed Acyclic Graph) defined in the XML. A workflow orchestrates multiple agents, passing conversational contexts and serialized memory natively between disparate models, ensuring long-running processes do not lose coherency.
 
-## 7. The Data Fabric: Memory & Persistence
-
-Memory is tiered and routed automatically to balance speed, persistence, and semantic recall.
-
-1. **Short-Term Memory**: In-memory dict-based stores spanning a single session lifespan. Ideal for rapid conversation histories.
-2. **Long-Term Memory**: SQLite/JSON based. Data persists between reboots, preserving user preferences.
-3. **Codex Memory**: The exact map of the codebase geometry. Responsible for knowing which files map to which classes natively.
-4. **Vector Store**: A theoretical mapping to ChromaDB, allowing semantic queries against past architectural decisions.
+#### 3.2.3 Model Agnostic Adapters (`sros/adapters/`)
+LLM APIs are abstracted behind the `AdapterRegistry`. An operator can seamlessly shift a running instance from OpenAI (`gpt-4o`) to Google (`gemini-1.5-pro`) to local inferences (`Ollama`) without refactoring any runtime code. The adapters normalize all prompt outputs into a standard SROS envelope, ensuring the Workflow Engine never has to deal with vendor-specific JSON structures.
 
 ---
 
-## 8. The Semantic Schema: SRXML
+### 3.3 Plane 3: Governance (The Absolute Authority)
 
-SROS avoids arbitrary JSON schema drift by utilizing Sovereign XML (SRXML). 
-All entities are strongly typed, heavily locked XML files parsed into Pydantic/Dataclass objects.
+**Location:** `sros/governance/`
 
-### 8.1 Schema Types
-- `<srx_agent_prompt>`: Governs an Agent's identity, role, permissions, and objectives.
-- `<sr8_workflow>`: Outlines a strict progression of tasks and checks.
-- `<governance_policy>`: Establishes a sandbox limit constraint.
+SROS does not rely on fragile "prompt engineering" (e.g., telling the model "Please do not delete files") to keep the host system safe. SROS relies on synchronous execution locks enforced directly by Plane 3.
 
-### 8.2 Attributes & Locks
-Every SRXML document carries:
-- `@one_pass_lock=true|false`: Restricts loop executions.
-- `@drift_lock`: Enforces immutability after parsing.
-- `@tenant`: Provides multitenant namespace isolation.
+#### 3.3.1 The Policy Engine
+The `PolicyEngine` listens for `agent.action_proposed` events on the bus. Before the Runtime plane is allowed to invoke an adapter, the proposed action is parsed against all active `GovernancePolicy` rulesides (written in SRXML).
+- **Hard Sandbox Limits**: An XML policy might declare absolute restrictions, such as blocking all file writes to the `kernel/` directory. If a BuilderAgent hallucinates and attempts to format the Kernel, the `PolicyEngine` instantly intercepts and destroys the request, logging the violation.
+- **Financial Controls**: Tracked by the `CostTracker`, the engine calculates the estimated token usage of an agent's request. If the daily API budget is breached, the action is denied with an `InsufficientFunds` exception.
 
----
+#### 3.3.2 Sovereign Directives & Risk Assessment
+The `SovereignDirective` system ranks actions by quantitative risk.
+- **Low Risk** (e.g., Reading a public file, querying a local database): Auto-allowed and logged to the asynchronous audit trail.
+- **Medium Risk** (e.g., Spawning a temporary sandbox, writing to `tmp/`): Evaluated against current system load and context.
+- **High Risk** (e.g., Code Execution outside Sandbox, Destructive Deletes, Modifying Policies): Generates a systemic lock requiring explicit, cryptographic Hassan (Operator) intervention or an advanced pre-approved receipt chain.
 
-## 9. Self-Evolution: Ouroboros Engine
-
-The `OuroborosLoop` represents SROS’s capacity to optimize its own source code within strict Sovereign guidelines.
-
-### 9.1 Evolution Pipeline
-1. **MirrorOS Signals**: The system observes poor performance or unoptimized loops natively.
-2. **Proposer Phase**: An internal agent writes an `EvolutionProposal` outlining a localized optimization.
-3. **Safeguard Phase**: The proposal is subjected to `Safeguards.check_proposal_allowed`. It maps bounding boxes (e.g., no edits > 50 lines).
-4. **Implementation**: The proposal is executed to an isolated sandbox.
-5. **Validation**: Test suites are generated and executed aggressively against the sandbox. If tests fail, the rollback is instantaneous. If passed, it merges.
+#### 3.3.3 The Append-Only Audit Log
+Every decision made by the Policy Engine, whether an allowance or a denial, is sequentially written to the `SovereignAuditLog`. This log is immutable during runtime and serves as the ultimate source of truth for forensic analysis if an agentic workflow breaches expected behavior.
 
 ---
 
-## 10. Operational Guide: Installation, CLI, & Nexus API
+### 3.4 Plane 4: MirrorOS (The Omniscient Observer)
 
-### 10.1 Quick Installation
+**Location:** `sros/mirroros/`
+
+Where Governance acts synchronously *before* the action to prevent catastrophe, MirrorOS acts asynchronously *after* the action to establish absolute observability and non-repudiation.
+
+#### 3.4.1 The Witness (`witness.py`)
+Every `publish()` on the Kernel's Event Bus is intercepted by the Witness. The Witness wraps these events in a temporal envelope, assigning high-precision timestamps and tracking IDs, and serializes them in JSONL format to `sros_traces.jsonl`. This establishes a complete "flight recorder" for the SROS instance.
+
+#### 3.4.2 Drift Detection & Telemetry
+MirrorOS monitors the divergence between internal states and outputted realities. 
+- The `DriftDetector` acts as an immune system, logging discrepancies between expected codebase outputs and external runtime configurations. If configuration drift exceeds predefined thresholds (e.g., parsed dataclass schemas no longer match the live Python classes), the drift lock engages, halting the system and enforcing a rollback to the last verified receipt.
+- The `TelemetryCollector` gathers metrics on latency, token throughput, subsystem health, and active daemon loads, making them available for querying via lenses.
+
+#### 3.4.3 Observational Lenses
+Lenses provide customizable filters over the raw Witness data, allowing operators to query the system's history through specific paradigmatic views:
+- **Temporal Lens**: Compares current behavior to historical execution traces to detect performance regressions.
+- **Identity Lens**: Verifies that an agent mapping strictly adheres to its SRXML `role` and `mode`.
+- **Risk Lens**: Highlights vectors of potential systemic harm over extended workflow periods.
+
+---
+
+## 4. The Data Fabric: Multi-Tiered Memory & Persistence
+
+**Location:** `sros/memory/`
+
+SROS owns memory outright. AI models are stateless function calls; SROS is the stateful environment. Memory is meticulously tiered and automatically routed to balance I/O speed, persistence, and semantic recall via the `MemoryRouter`.
+
+1. **Short-Term Memory**: In-memory, dictionary-backed data stores spanning the lifespan of a single Session. Ideal for rapid conversation histories and immediate context passing between sequential agent steps. Exits existence upon `session.close()`.
+2. **Long-Term Memory**: Disk-backed (SQLite/JSON) storage. Data persists between reboots, preserving user preferences, historical configurations, and explicit system parameters.
+3. **Codex Memory**: A highly specialized layer representing the exact map of the codebase geometry. Responsible for knowing which abstract files map to which classes, caching abstract syntax trees, and preventing agents from hallucinating file paths.
+4. **Vector Store**: A continuous semantic space (backed theoretically by ChromaDB) allowing context-aware embedding queries. Retrieves past architectural decisions, previous bugs, and deeply buried context based on high-dimensional similarity.
+
+---
+
+## 5. The Semantic Schema: SRXML & Determinism
+
+**Location:** `sros/srxml/`
+
+SROS violently rejects arbitrary JSON schema drift. LLMs output unpredictable JSON structures, which leads to `KeyError` crashes in production. SROS solves this by utilizing Sovereign XML (SRXML). All logical entities are strongly typed, heavily locked XML files parsed into strict Pydantic/Dataclass objects.
+
+### 5.1 Document Topologies
+- `<srx_agent_prompt>`: Governs an Agent's identity, role, permissions, context bindings, and core objectives.
+- `<sr8_workflow>`: Outlines a strict progression of tasks, dependencies, injected inputs, and expected output contracts.
+- `<governance_policy>`: Establishes a sandbox limit constraint, defining the condition, the action (`allow` or `deny`), and the explicit notification message.
+
+### 5.2 The Lock System
+Every SRXML document carries rigid systemic attributes that enforce the OS's laws:
+- `@one_pass_lock='true'`: Restricts loop executions. If an agent fails a step with this lock active, it is not permitted to request manual human guidance. It must read the logs, synthesize a fix, and complete the objective in a single autonomous pass.
+- `@drift_lock='true'`: Enforces absolute immutability after parsing. The parsed object cannot be dynamically mutated at runtime.
+- `@seed_lock`: Ensures that the random generation seed for any LLM calls executed under this document is fixed, guaranteeing absolute reproducibility.
+
+### 5.3 Parsing and Validating
+The `SRXMLParser` reads the raw XML and translates `item` nodes into lists, enforcing required schema tags. The parsed objects are then validated by the `SRXMLValidator` before the Kernel allows them to enter the Runtime plane.
+
+---
+
+## 6. Self-Evolution: The Ouroboros Engine
+
+**Location:** `sros/evolution/`
+
+The `OuroborosLoop` represents SROS’s crowning theoretical capability: the capacity to analyze, refactor, and optimize its own source code within hyper-strict Sovereign guidelines.
+
+### 6.1 The Evolutionary Pipeline
+1. **Observation & Signals**: MirrorOS observes poor latency, redundant code paths, or unoptimized loops natively.
+2. **Analysis Phase**: The `Analyzer` identifies structural bottlenecks and packages the telemetry.
+3. **Proposer Phase**: An internal Analyst Agent writes an `EvolutionProposal` outlining a localized optimization, adhering to the "Minimal Diff Bias" operating law.
+4. **Safeguard Interception**: The proposal is subjected to `Safeguards.check_proposal_allowed()`. It maps bounding boxes (e.g., "Does this touch Plane 1?", "Are edits > 50 lines?"). If it hits a forbidden zone, the proposal is vaporized.
+5. **Implementation Sandbox**: The proposal is executed to an isolated sandbox environment, detached from the live Kernel.
+6. **Validation & Integration**: SROS generates aggressive `pytest` suites against the sandbox. If the tests fail, the rollback is instantaneous, and the error traces are fed back to the Proposer. If passed with a cleanly verified receipt, it merges into the mainline code.
+
+---
+
+## 7. Operational Guide: Installation, Configuration, and CLI
+
+### 7.1 Quick Installation via Source
+SROS v1 is designed for UNIX and Windows environments running Python 3.10+.
 ```bash
-git clone <repository_url>
+git clone https://github.com/skrikx/SROS-V1.git
 cd SROS-V1
 python -m pip install -e .
 ```
 
-### 10.2 Command Line Interface (Nexus CLI)
-The SROS binary exposes standard operations:
-- **`sros init`**: Initializes configurations, local memory stores, and verifies dependencies.
-- **`sros run-demo`**: Executes the foundational `Canonical Demo` workflow to verify plane-to-plane communications.
-
-### 10.3 Configuration via `sros_config.yml`
+### 7.2 Core Configuration (`sros_config.yml`)
+The operating parameters of the entire system are determined by the YAML config file located at the repository root.
 ```yaml
 system:
   mode: apex
   runtime: default
 
 kernel:
-  tick_rate_ms: 50
+  tick_rate_ms: 10
   max_daemons: 10
 
 memory:
   short_term: "memory.short"
-  max_tokens: 8192
+  max_tokens: 16384
+
+adapters:
+  default_model: "gemini"
+  
+governance:
+  enforce_policies: true
+  cost_budget_daily: 50.0
 ```
+
+### 7.3 Environmental Variables
+Essential secrets and toggles are managed via `.env` or system variables:
+- `GEMINI_API_KEY`: Authentication for Google's Gemini endpoint.
+- `OPENAI_API_KEY`: Authentication for OpenAI endpoints.
+- `SROS_DEBUG`: Set to `true` to enable verbose stack traces.
+- `SROS_LOG_LEVEL`: Adjust logging verbosity (`DEBUG`, `INFO`, `WARNING`, `ERROR`).
+
+### 7.4 Command Line Interface (Nexus CLI)
+The SROS binary exposes standard operations directly to the operator. The CLI acts as the entrypoint to the Nexus Core API.
+
+#### 7.4.1 System Commands
+- **`sros init`**: Initializes configurations, scaffolds local memory SQLite stores, and verifies all cryptographic dependencies.
+- **`sros run-demo`**: Executes the foundational `Canonical Demo` workflow (simulating basic Plane-to-Plane communication) to verify the Kernel boots correctly and Agents can pass contexts natively.
+
+*(Note: Advanced commands such as `sros agent run` and `sros memory read` are currently handled either via internal workflows or direct Python API integrations in v1).*
 
 ---
 
-## 11. Developer Guide: Extending SROS
+## 8. Developer Guide: Extending and Customizing SROS
 
-### 11.1 Crafting a Custom Agent
-To create a custom LLM archetype, create an SRXML template:
+SROS is designed to be highly modular. Developers can extend the system by writing new Adapters, Agents, and Policies.
+
+### 8.1 Crafting a Custom Agent
+To create a custom LLM archetype, you do not write Python prompts. You write an SRXML template. Hand this SRXML to the `WorkflowEngine` to spawn the customized identity.
+
 ```xml
-<srx_agent_prompt id="agent.my_custom" version="1.0" tenant="custom">
+<srx_agent_prompt id="agent.my_custom_analyst" version="1.0" tenant="custom">
     <role>analyst</role>
     <mode>read_only</mode>
     <identity>
         <system_name>AnalystAgent</system_name>
-        <purpose>Scan logs and identify errors</purpose>
+        <purpose>Ingest large log files and output structured JSON summaries</purpose>
     </identity>
+    <objectives>
+        <item>Never mutate state</item>
+        <item>Always provide line numbers</item>
+    </objectives>
 </srx_agent_prompt>
 ```
-Place the file in your target environment, and point a test script at `SRXMLParser().parse_to_object()`.
 
-### 11.2 Connecting the CLI to a Python Wrapper
+### 8.2 Interfacing with Nexus in Python
+You can embed SROS inside broader applications by bypassing the CLI and interacting directly with the `NexusCore`.
+
 ```python
 from sros.kernel import kernel_bootstrap
 from sros.apps.sros_web_nexus.nexus_core import NexusCore
 
-kernel_context = kernel_bootstrap.boot()
+# 1. Boot the OS
+kernel_context = kernel_bootstrap.boot("sros_config.yml")
+
+# 2. Attach the Nexus Router
 nexus = NexusCore(kernel_context)
-nexus.run_command("query_agent", {"agent_id": "architect", "prompt": "Hi."})
+
+# 3. Dispatch high-level commands
+response = nexus.run_command("run_demo")
+print(f"Status: {response['status']}")
+
+# 4. Graceful Shutdown
+kernel_context.registry.stop_all()
 ```
 
+### 8.3 Implementing a New Model Adapter
+To add support for a fictional new LLM provider (e.g., `Anthropic`), inherit from `ModelAdapterBase` in `sros/adapters/models/`.
+
+```python
+from sros.adapters.base import ModelAdapterBase
+
+class AnthropicAdapter(ModelAdapterBase):
+    async def generate(self, prompt: str) -> str:
+        # Implement proprietary HTTP call here
+        pass
+        
+    async def estimate_cost(self, prompt: str) -> float:
+        # Implement token math
+        return count * 0.0001
+```
+Register the adapter in the `AdapterRegistry`, and the Runtime plane will automatically be able to utilize Claude models.
+
 ---
 
-## 12. Glossary of Terms
+## 9. Advanced Troubleshooting and System Recovery
 
-- **Apex Grade**: SROS standard of excellence. Requires One Pass Lock obedience, strict adherence to reality, and absolute removal of placeholder variables.
-- **One Pass Lock**: An agent execution restriction whereby the system is not permitted to request manual human guidance. It must read the logs and fix errors in-stream automatically.
-- **Receipts**: Definitive proofs of success. E.g., Pytest logs, Trace hashes.
+When the operating system enters a failure state, SROS relies on deterministic logs to recover.
+
+### 9.1 Diagnosing Kernel Panics
+If `sros run-demo` hangs or crashes immediately upon booting:
+1. Enable `SROS_DEBUG=true`.
+2. Check `harness.log` for EventBus timeouts.
+3. Ensure the `HeartbeatDaemon` successfully registered in the pre-flight checks. A blocked port or thread deadlock in the memory router will prevent the daemon from ticking.
+
+### 9.2 Tracing Agent Hallucinations
+If an Agent begins emitting anomalous outputs or failing workflow steps:
+1. Examine `sros_traces.jsonl` via MirrorOS. Look for the `agent.thinking` and `agent.acted` events.
+2. Cross-reference the timestamps with `sros_audit.jsonl` to ensure the Governance plane did not forcefully modify the prompt context due to a policy violation.
+3. Check the `DriftDetector` logs. If the LLM drifted away from the SRXML `<output_contract>`, SROS will silently retry up to the retry limit before hard-failing.
+
+### 9.3 Resolving SQLite Memory Locks
+If `MemoryRouter` throws `database is locked` exceptions during highly parallel workflows:
+1. Ensure the `long_term_memory` configuration path is located on a local drive, not a high-latency network share.
+2. In SROS v1, avoid spawning more than 5 highly-active agents simultaneously against a single SQLite endpoint without enabling WAL (Write-Ahead Logging) mode.
 
 ---
-*Generated by the SROS v1 Knowledge Pack Builder.*
+
+## 10. Glossary of Terms
+
+- **Apex Grade**: The absolute highest standard of SROS development. Requires strict One Pass Lock obedience, unyielding adherence to computational reality, and the absolute removal of all placeholder variables or mock architectures.
+- **One Pass Lock**: A rigid agent execution restriction whereby the system is not permitted to request manual human guidance. It must read the logs, analyze the stack traces, and fix errors in-stream automatically.
+- **Receipts**: Definitive proofs of success. E.g., `pytest` logs, Cryptographic Trace hashes, verified JSON outputs. SROS does not accept "Done" without a receipt.
+- **Terminal Nullification**: A system state invoked by Plane 3 when safety policies are critically breached. All active sessions are forcefully purged, memory buffers flushed, and the OS drops back to Kernel standby.
+
+---
+> *Generated by Antigravity under Sovereign Directives.*
+> *End of Document.*
