@@ -1,0 +1,52 @@
+{
+  "type": "object",
+  "required": [
+    "schema_version",
+    "sros_version",
+    "receipt_type",
+    "workflow_id",
+    "workflow_checksum",
+    "run_id",
+    "steps",
+    "trace_count",
+    "receipt_chain",
+    "governance_summary",
+    "mirror_summary"
+  ],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0.0"},
+    "sros_version": {"type": "string"},
+    "receipt_type": {"type": "string", "const": "workflow_execution"},
+    "workflow_id": {"type": "string"},
+    "workflow_checksum": {"type": "string"},
+    "run_id": {"type": "string"},
+    "steps": {"type": "array"},
+    "trace_count": {"type": "integer", "minimum": 0},
+    "receipt_chain": {
+      "type": "object",
+      "required": ["step_hashes", "chain_hash"],
+      "properties": {
+        "step_hashes": {"type": "array", "items": {"type": "string"}},
+        "chain_hash": {"type": "string"}
+      }
+    },
+    "governance_summary": {
+      "type": "object",
+      "required": ["total_policy_checks", "verdicts"],
+      "properties": {
+        "total_policy_checks": {"type": "integer", "minimum": 0},
+        "verdicts": {"type": "object"}
+      }
+    },
+    "mirror_summary": {
+      "type": "object",
+      "required": ["drift_detected", "max_drift_score", "all_events_witnessed", "total_traces"],
+      "properties": {
+        "drift_detected": {"type": "boolean"},
+        "max_drift_score": {"type": "number"},
+        "all_events_witnessed": {"type": "boolean"},
+        "total_traces": {"type": "integer", "minimum": 0}
+      }
+    }
+  }
+}

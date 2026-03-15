@@ -6,23 +6,29 @@ and receipt generation.
 """
 
 import asyncio
-import json
 import hashlib
+import json
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import List, Dict, Any, Optional
+from typing import Any, Dict, List, Optional
 
+from ..governance.policy_engine import PolicyEngine, PolicyResult
 from ..kernel.kernel_bootstrap import boot as kernel_boot
-from ..srxml.parser import SRXMLParser
-from ..governance.policy_engine import PolicyEngine
-from ..mirroros.witness import Witness
-from ..mirroros.trace_store import TraceStore
 from ..mirroros.drift_detector import DriftDetector
+from ..mirroros.trace_store import TraceStore
+from ..mirroros.witness import Witness
+from ..srxml.parser import SRXMLParser
+from ..version import get_release_version
+from .receipt_validator import RECEIPT_SCHEMA_VERSION, validate_receipt
 
 
 def _sha256_short(data: str) -> str:
     return hashlib.sha256(data.encode()).hexdigest()[:16]
+
+
+def _sha256_file(path: str) -> str:
+    return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
 class GoverningWorkflowRunner:
@@ -38,38 +44,26 @@ class GoverningWorkflowRunner:
         self.drift_threshold = drift_threshold
         self.ui = ui_handlers or {}
 
-    def run(
-        self,
-        srxml_path: str,
-        receipt_path: str,
-    ) -> Dict[str, Any]:
-        return asyncio.run(
-            self._execute(srxml_path, receipt_path)
-        )
+    def run(self, srxml_path: str, receipt_path: str) -> Dict[str, Any]:
+        return asyncio.run(self._execute(srxml_path, receipt_path))
 
-    async def _execute(
-        self,
-        srxml_path: str,
-        receipt_path: str,
-    ) -> Dict[str, Any]:
+    async def _execute(self, srxml_path: str, receipt_path: str) -> Dict[str, Any]:
         run_id = str(uuid.uuid4())
         start_ts = datetime.now(timezone.utc).isoformat()
 
-        # --- Boot real subsystem stack ---
         kernel = kernel_boot()
         trace_store = TraceStore(storage_path="./data/traces")
         witness = Witness(trace_store)
         drift_detector = DriftDetector({"performance_threshold": self.drift_threshold})
         policy_engine = PolicyEngine(mode="strict")
 
-        # Load policies into the real PolicyEngine
         for policy in self.policies:
             policy_engine.load_policy(policy)
 
-        # --- Parse real SRXML file ---
         parser = SRXMLParser()
         workflow_def = parser.parse(srxml_path)
         workflow_id = workflow_def.get("@id", Path(srxml_path).stem)
+        workflow_checksum = _sha256_file(srxml_path)
 
         witness.record("workflow.start", {"workflow_id": workflow_id, "run_id": run_id})
         kernel.event_bus.publish("runtime", "workflow.start", {"workflow_id": workflow_id, "run_id": run_id})
@@ -80,65 +74,69 @@ class GoverningWorkflowRunner:
         max_drift = 0.0
 
         for i, step_def in enumerate(steps_raw):
-            step_id = step_def.get("id", f"step{i+1}")
+            step_id = step_def.get("id", f"step{i + 1}")
             agent_id = step_def.get("agent", "unknown")
             instruction = step_def.get("instruction", "")
-            
+
             meta = self.step_metadata.get(step_id, {})
             action = meta.get("action", f"execute_{step_id}")
 
             if "step" in self.ui:
                 self.ui["step"](i + 1, len(steps_raw), agent_id, instruction)
 
-            # --- Evaluate Policy ---
-            # We enrich the evaluate context to mimic real derivation
             policy_result = policy_engine.evaluate(
-                action, 
+                action,
                 context={
                     "step_id": step_id,
                     "agent": agent_id,
                     "tenant": "PlatXP",
                     "resource": meta.get("resource", "system"),
-                    "requested_fields": meta.get("requested_fields", [])
-                }
+                    "requested_fields": meta.get("requested_fields", []),
+                },
             )
-            
-            gov_ctx = meta.get("governance", {})
-            
-            # Merit-based verdict: if PolicyEngine says allow, we use metadata-refined status
-            # if PolicyEngine says deny, we force deny.
-            if policy_result.allowed:
-                verdict = gov_ctx.get("verdict", "allow")
-            else:
-                verdict = "deny"
 
+            verdict = policy_result.verdict
             gov_verdicts[verdict] = gov_verdicts.get(verdict, 0) + 1
 
-            witness.record("governance.evaluated", {
-                "step_id": step_id,
-                "verdict": verdict,
-                "reason": gov_ctx.get("reason", policy_result.reason)
-            })
+            witness.record(
+                "governance.evaluated",
+                {
+                    "step_id": step_id,
+                    "verdict": verdict,
+                    "reason": policy_result.reason,
+                    "policy_name": policy_result.matched_policy_name,
+                    "rule_id": policy_result.matched_rule_id,
+                },
+            )
 
             if "verdict" in self.ui:
                 self.ui["verdict"](
-                    verdict, 
-                    gov_ctx.get("risk_level", "low"), 
-                    gov_ctx.get("reason", policy_result.reason),
-                    gov_ctx.get("conditions")
+                    verdict,
+                    policy_result.risk_level or "unknown",
+                    policy_result.reason,
+                    policy_result.conditions,
                 )
 
-            if verdict == "deny":
-                step_results.append(self._build_step_res(step_id, agent_id, action, instruction, meta, verdict, 0.0, "denied"))
+            if not policy_result.allowed:
+                step_results.append(
+                    self._build_step_res(
+                        step_id,
+                        agent_id,
+                        action,
+                        instruction,
+                        meta,
+                        policy_result,
+                        0.0,
+                        "denied",
+                    )
+                )
                 continue
 
-            # --- Real execution via Bus ---
             kernel.event_bus.publish("runtime", "agent.thinking", {"agent": agent_id, "input": instruction})
-            await asyncio.sleep(0.1) # Simulate real async wait
+            await asyncio.sleep(0.1)
             output = meta.get("output", f"Processed step {step_id}")
             kernel.event_bus.publish("runtime", "agent.acted", {"agent": agent_id, "response": output})
 
-            # --- Record Drift ---
             drift = meta.get("drift", 0.05)
             drift_detector.record_metric(f"agent.{agent_id}", "drift", drift)
             max_drift = max(max_drift, drift)
@@ -147,26 +145,39 @@ class GoverningWorkflowRunner:
                 self.ui["drift"](drift, self.drift_threshold)
 
             witness.record("workflow.step.completed", {"step_id": step_id, "drift": drift})
-            step_results.append(self._build_step_res(step_id, agent_id, action, instruction, meta, verdict, drift, "completed"))
+            step_results.append(
+                self._build_step_res(
+                    step_id,
+                    agent_id,
+                    action,
+                    instruction,
+                    meta,
+                    policy_result,
+                    drift,
+                    "completed",
+                )
+            )
 
         end_ts = datetime.now(timezone.utc).isoformat()
-        
+
         witness.record("workflow.end", {"workflow_id": workflow_id})
         kernel.event_bus.publish("runtime", "workflow.end", {"workflow_id": workflow_id})
 
-        # --- Receipt Gen ---
         step_hashes = [_sha256_short(json.dumps(s, sort_keys=True, default=str)) for s in step_results]
         chain_hash = _sha256_short("->".join(step_hashes))
 
         receipt = {
-            "sros_version": "1.0.0-alpha",
+            "schema_version": RECEIPT_SCHEMA_VERSION,
+            "sros_version": get_release_version(),
             "receipt_type": "workflow_execution",
             "workflow_id": workflow_id,
+            "workflow_checksum": workflow_checksum,
             "run_id": run_id,
             "started_at": start_ts,
             "completed_at": end_ts,
             "status": "success",
             "total_steps": len(step_results),
+            "trace_count": len(trace_store.traces),
             "steps": step_results,
             "receipt_chain": {
                 "step_hashes": step_hashes,
@@ -175,20 +186,21 @@ class GoverningWorkflowRunner:
             "governance_summary": {
                 "total_policy_checks": len(step_results),
                 "verdicts": gov_verdicts,
-                "domain_blocked": self.step_metadata.get("_global", {}).get("domain_blocked", [])
+                "domain_blocked": self.step_metadata.get("_global", {}).get("domain_blocked", []),
             },
             "mirror_summary": {
                 "drift_detected": max_drift > self.drift_threshold,
                 "max_drift_score": max_drift,
                 "all_events_witnessed": True,
-                "total_traces": len(trace_store.traces)
-            }
+                "total_traces": len(trace_store.traces),
+            },
         }
+
+        validate_receipt(receipt)
 
         out = Path(receipt_path)
         out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(json.dumps(receipt, indent=2, default=str))
-
+        out.write_text(json.dumps(receipt, indent=2, sort_keys=True, default=str), encoding="utf-8")
         return receipt
 
     def _extract_steps(self, workflow_def: Dict) -> List[Dict]:
@@ -224,8 +236,17 @@ class GoverningWorkflowRunner:
         result.sort(key=lambda s: int(s.get("order", 0)))
         return result
 
-    def _build_step_res(self, step_id, agent_id, action, instruction, meta, verdict, drift, status):
-        gov_ctx = meta.get("governance", {})
+    def _build_step_res(
+        self,
+        step_id: str,
+        agent_id: str,
+        action: str,
+        instruction: str,
+        meta: Dict[str, Any],
+        policy_result: PolicyResult,
+        drift: float,
+        status: str,
+    ):
         return {
             "step_id": step_id,
             "agent": agent_id,
@@ -235,16 +256,18 @@ class GoverningWorkflowRunner:
             "status": status,
             "governance": {
                 "policy_checked": True,
-                "verdict": verdict,
-                "policy_name": gov_ctx.get("policy_name", "default"),
-                "risk_level": gov_ctx.get("risk_level", "low"),
-                "reason": gov_ctx.get("reason", ""),
-                "conditions": gov_ctx.get("conditions", [])
+                "allowed": policy_result.allowed,
+                "verdict": policy_result.verdict,
+                "policy_name": policy_result.matched_policy_name,
+                "rule_id": policy_result.matched_rule_id,
+                "risk_level": policy_result.risk_level,
+                "reason": policy_result.reason,
+                "conditions": policy_result.conditions,
             },
             "mirror": {
                 "drift_score": drift,
                 "drift_threshold": self.drift_threshold,
                 "drift_detected": drift > self.drift_threshold,
-                "witness_recorded": True
-            }
+                "witness_recorded": True,
+            },
         }

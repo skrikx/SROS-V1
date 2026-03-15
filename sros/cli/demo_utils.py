@@ -78,6 +78,9 @@ def resolve_demo_paths(name: str):
     """Helper to resolve SRXML and receipt paths."""
     base_dir = Path.cwd()
     srxml = base_dir / "examples" / f"{name}.srxml"
+    if not srxml.exists():
+        typer.secho(f"Missing required workflow asset: {srxml}", fg=typer.colors.RED)
+        raise typer.Exit(code=2)
     receipt_dir = base_dir / "receipts"
     receipt_dir.mkdir(exist_ok=True)
     receipt = receipt_dir / f"{name}_receipt.json"

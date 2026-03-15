@@ -16,7 +16,38 @@ def main():
         "Recursive Policy Evaluation"
     )
 
-    policies = [{"effect": "allow", "name": "base_allow"}]
+    policies = [
+        {
+            "name": "governance_demo_policy",
+            "rules": [
+                {
+                    "id": "gd-1",
+                    "priority": 10,
+                    "action": "analyze_requirements",
+                    "effect": "allow",
+                    "reason": "Read-only analysis operation on public requirements.",
+                    "risk_level": "low"
+                },
+                {
+                    "id": "gd-2",
+                    "priority": 20,
+                    "action": "propose_code_change",
+                    "effect": "allow_with_conditions",
+                    "reason": "Code mutation proposed to payment module.",
+                    "risk_level": "medium",
+                    "conditions": ["Max 50-line diff enforced", "Must pass test suite before commit"]
+                },
+                {
+                    "id": "gd-3",
+                    "priority": 30,
+                    "action": "generate_validation_tests",
+                    "effect": "allow",
+                    "reason": "Test generation is a permitted write operation to the test plane.",
+                    "risk_level": "low"
+                }
+            ]
+        }
+    ]
     
     metadata = {
         "step1": {
@@ -24,37 +55,18 @@ def main():
             "resource": "doc_store/requirements.txt",
             "output": "Architecture meets separation-of-concerns requirements. Proceed.",
             "drift": 0.02,
-            "governance": {
-                "verdict": "allow",
-                "policy_name": "default_allow_read_operations",
-                "risk_level": "low",
-                "reason": "Read-only analysis operation on public requirements."
-            }
         },
         "step2": {
             "action": "propose_code_change",
             "resource": "src/payment_handler.py",
             "output": "Proposal generated: 12 lines added to payment_handler.py.",
             "drift": 0.15,
-            "governance": {
-                "verdict": "allow_with_conditions",
-                "policy_name": "code_mutation_governance",
-                "risk_level": "medium",
-                "reason": "Code mutation proposed to payment module.",
-                "conditions": ["Max 50-line diff enforced", "Must pass test suite before commit"]
-            }
         },
         "step3": {
             "action": "generate_validation_tests",
             "resource": "tests/test_payments.py",
             "output": "Generated 4 test cases covering validation and logging.",
             "drift": 0.04,
-            "governance": {
-                "verdict": "allow",
-                "policy_name": "test_generation_policy",
-                "risk_level": "low",
-                "reason": "Test generation is a permitted write operation to the test plane."
-            }
         }
     }
 

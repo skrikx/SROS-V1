@@ -1,104 +1,113 @@
 {
-  "sros_version": "1.0.0-alpha",
-  "receipt_type": "workflow_execution",
-  "workflow_id": "governance_demo",
-  "run_id": "9789f0c5-7d9d-4a33-a2ee-80b6d17cd844",
-  "started_at": "2026-03-15T04:02:00.954399+00:00",
-  "completed_at": "2026-03-15T04:02:01.278999+00:00",
-  "status": "success",
-  "total_steps": 3,
-  "steps": [
-    {
-      "step_id": "step1",
-      "agent": "architect",
-      "action": "analyze_requirements",
-      "instruction": "Evaluate system architecture for compliance readiness",
-      "output": "Architecture meets separation-of-concerns requirements. Proceed.",
-      "status": "completed",
-      "governance": {
-        "policy_checked": true,
-        "verdict": "allow",
-        "policy_name": "default_allow_read_operations",
-        "risk_level": "low",
-        "reason": "Read-only analysis operation.",
-        "conditions": []
-      },
-      "mirror": {
-        "drift_score": 0.02,
-        "drift_threshold": 0.5,
-        "drift_detected": false,
-        "witness_recorded": true
-      }
-    },
-    {
-      "step_id": "step2",
-      "agent": "builder",
-      "action": "propose_code_change",
-      "instruction": "Add audit logging to the payment processing module",
-      "output": "Proposal generated: 12 lines added to payment_handler.py.",
-      "status": "completed",
-      "governance": {
-        "policy_checked": true,
-        "verdict": "allow_with_conditions",
-        "policy_name": "code_mutation_governance",
-        "risk_level": "medium",
-        "reason": "Code mutation proposed. Conditionally allowed.",
-        "conditions": [
-          "Max 50-line diff enforced",
-          "Must pass test suite"
-        ]
-      },
-      "mirror": {
-        "drift_score": 0.15,
-        "drift_threshold": 0.5,
-        "drift_detected": false,
-        "witness_recorded": true
-      }
-    },
-    {
-      "step_id": "step3",
-      "agent": "tester",
-      "action": "generate_validation_tests",
-      "instruction": "Generate pytest tests for the proposed audit logging changes",
-      "output": "Generated 4 test cases covering validation and logging.",
-      "status": "completed",
-      "governance": {
-        "policy_checked": true,
-        "verdict": "allow",
-        "policy_name": "test_generation_policy",
-        "risk_level": "low",
-        "reason": "Test generation is a read-and-write-test operation.",
-        "conditions": []
-      },
-      "mirror": {
-        "drift_score": 0.04,
-        "drift_threshold": 0.5,
-        "drift_detected": false,
-        "witness_recorded": true
-      }
-    }
-  ],
-  "receipt_chain": {
-    "step_hashes": [
-      "7230ea5f5b3c7286",
-      "da50ad15fb441b00",
-      "47a4132a13e17ede"
-    ],
-    "chain_hash": "4402664858a890f8"
-  },
+  "completed_at": "2026-03-15T23:33:15.767336+00:00",
   "governance_summary": {
+    "domain_blocked": [],
     "total_policy_checks": 3,
     "verdicts": {
       "allow": 2,
       "allow_with_conditions": 1,
       "deny": 0
-    },
-    "domain_blocked": []
+    }
   },
   "mirror_summary": {
+    "all_events_witnessed": true,
     "drift_detected": false,
     "max_drift_score": 0.15,
-    "all_events_witnessed": true,
     "total_traces": 8
-  }
+  },
+  "receipt_chain": {
+    "chain_hash": "d787f3c92b9a583c",
+    "step_hashes": [
+      "0deee3a50a61ccb7",
+      "eef12071d7e31391",
+      "717c7586812d4340"
+    ]
+  },
+  "receipt_type": "workflow_execution",
+  "run_id": "c39ac232-48dc-4f95-8418-386c35b57d40",
+  "schema_version": "1.0.0",
+  "sros_version": "v1.0.0",
+  "started_at": "2026-03-15T23:33:15.460860+00:00",
+  "status": "success",
+  "steps": [
+    {
+      "action": "analyze_requirements",
+      "agent": "architect",
+      "governance": {
+        "allowed": true,
+        "conditions": [],
+        "policy_checked": true,
+        "policy_name": "governance_demo_policy",
+        "reason": "Read-only analysis operation on public requirements.",
+        "risk_level": "low",
+        "rule_id": "gd-1",
+        "verdict": "allow"
+      },
+      "instruction": "Evaluate system architecture for compliance readiness",
+      "mirror": {
+        "drift_detected": false,
+        "drift_score": 0.02,
+        "drift_threshold": 0.5,
+        "witness_recorded": true
+      },
+      "output": "Architecture meets separation-of-concerns requirements. Proceed.",
+      "status": "completed",
+      "step_id": "step1"
+    },
+    {
+      "action": "propose_code_change",
+      "agent": "builder",
+      "governance": {
+        "allowed": true,
+        "conditions": [
+          "Max 50-line diff enforced",
+          "Must pass test suite before commit"
+        ],
+        "policy_checked": true,
+        "policy_name": "governance_demo_policy",
+        "reason": "Code mutation proposed to payment module.",
+        "risk_level": "medium",
+        "rule_id": "gd-2",
+        "verdict": "allow_with_conditions"
+      },
+      "instruction": "Add audit logging to the payment processing module",
+      "mirror": {
+        "drift_detected": false,
+        "drift_score": 0.15,
+        "drift_threshold": 0.5,
+        "witness_recorded": true
+      },
+      "output": "Proposal generated: 12 lines added to payment_handler.py.",
+      "status": "completed",
+      "step_id": "step2"
+    },
+    {
+      "action": "generate_validation_tests",
+      "agent": "tester",
+      "governance": {
+        "allowed": true,
+        "conditions": [],
+        "policy_checked": true,
+        "policy_name": "governance_demo_policy",
+        "reason": "Test generation is a permitted write operation to the test plane.",
+        "risk_level": "low",
+        "rule_id": "gd-3",
+        "verdict": "allow"
+      },
+      "instruction": "Generate pytest tests for the proposed audit logging changes",
+      "mirror": {
+        "drift_detected": false,
+        "drift_score": 0.04,
+        "drift_threshold": 0.5,
+        "witness_recorded": true
+      },
+      "output": "Generated 4 test cases covering validation and logging.",
+      "status": "completed",
+      "step_id": "step3"
+    }
+  ],
+  "total_steps": 3,
+  "trace_count": 8,
+  "workflow_checksum": "2ede3c3b0df19e0ceb697cb12e637c482913a11d32926f109e2adcccf5631285",
+  "workflow_id": "governance_demo"
 }

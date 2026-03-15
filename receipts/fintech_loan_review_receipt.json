@@ -1,107 +1,116 @@
 {
-  "sros_version": "1.0.0-alpha",
-  "receipt_type": "workflow_execution",
-  "workflow_id": "fintech.loan_review",
-  "run_id": "5b19c238-c0be-471e-9c0d-e7c636baeb9b",
-  "started_at": "2026-03-15T04:08:06.851262+00:00",
-  "completed_at": "2026-03-15T04:08:07.186161+00:00",
-  "status": "success",
-  "total_steps": 3,
-  "steps": [
-    {
-      "step_id": "step1",
-      "agent": "architect",
-      "action": "classify_pii_fields",
-      "instruction": "Review the loan application data schema. Identify which\n        fields contain PII (SSN, income, address) and which are safe for\n        automated credit scoring. Output a field classification report.",
-      "output": "Fields classified. PII restricted: SSN, raw_income. Safe: debt_to_income_ratio",
-      "status": "completed",
-      "governance": {
-        "policy_checked": true,
-        "verdict": "allow",
-        "policy_name": "pii_classification_read_only",
-        "risk_level": "low",
-        "reason": "Schema inspection is read-only. No PII data records accessed.",
-        "conditions": []
-      },
-      "mirror": {
-        "drift_score": 0.01,
-        "drift_threshold": 0.5,
-        "drift_detected": false,
-        "witness_recorded": true
-      }
-    },
-    {
-      "step_id": "step2",
-      "agent": "builder",
-      "action": "generate_credit_score",
-      "instruction": "Generate a credit risk score based on non-PII fields only.\n        The governance policy restricts access to SSN and raw income fields.\n        Use debt-to-income ratio and payment history instead.",
-      "output": "Credit risk score: 720. Based on debt_to_income_ratio (0.32).",
-      "status": "completed",
-      "governance": {
-        "policy_checked": true,
-        "verdict": "allow_with_conditions",
-        "policy_name": "pii_access_restriction",
-        "risk_level": "medium",
-        "reason": "PII fields (SSN, raw_income) blocked by recursive policy.",
-        "conditions": [
-          "SSN field access denied",
-          "raw_income field access denied"
-        ]
-      },
-      "mirror": {
-        "drift_score": 0.08,
-        "drift_threshold": 0.5,
-        "drift_detected": false,
-        "witness_recorded": true
-      }
-    },
-    {
-      "step_id": "step3",
-      "agent": "tester",
-      "action": "validate_field_access_compliance",
-      "instruction": "Validate that the credit scoring model did not access\n        restricted PII fields. Generate a compliance test report confirming\n        field-level access governance was enforced.",
-      "output": "Compliance check passed. 0 restricted field accesses detected in tracer.",
-      "status": "completed",
-      "governance": {
-        "policy_checked": true,
-        "verdict": "allow",
-        "policy_name": "compliance_audit_policy",
-        "risk_level": "low",
-        "reason": "Compliance audit is a read-only validation operation.",
-        "conditions": []
-      },
-      "mirror": {
-        "drift_score": 0.02,
-        "drift_threshold": 0.5,
-        "drift_detected": false,
-        "witness_recorded": true
-      }
-    }
-  ],
-  "receipt_chain": {
-    "step_hashes": [
-      "f399d2b522a82be8",
-      "4eafe96061d48494",
-      "07aadd22c964b04b"
-    ],
-    "chain_hash": "06d3141d3f9ee68b"
-  },
+  "completed_at": "2026-03-15T23:33:16.931033+00:00",
   "governance_summary": {
+    "domain_blocked": [
+      "SSN",
+      "raw_income"
+    ],
     "total_policy_checks": 3,
     "verdicts": {
       "allow": 2,
       "allow_with_conditions": 1,
       "deny": 0
-    },
-    "domain_blocked": [
-      "SSN",
-      "raw_income"
-    ]
+    }
   },
   "mirror_summary": {
+    "all_events_witnessed": true,
     "drift_detected": false,
     "max_drift_score": 0.08,
-    "all_events_witnessed": true,
     "total_traces": 8
-  }
+  },
+  "receipt_chain": {
+    "chain_hash": "f58dafad8f99f780",
+    "step_hashes": [
+      "a2f6f605f761e57b",
+      "abb3bb5feccaf9b4",
+      "30f22dfac296fd60"
+    ]
+  },
+  "receipt_type": "workflow_execution",
+  "run_id": "d50a45d5-e76a-4e24-ab25-48d33535c2b1",
+  "schema_version": "1.0.0",
+  "sros_version": "v1.0.0",
+  "started_at": "2026-03-15T23:33:16.623146+00:00",
+  "status": "success",
+  "steps": [
+    {
+      "action": "classify_pii_fields",
+      "agent": "architect",
+      "governance": {
+        "allowed": true,
+        "conditions": [],
+        "policy_checked": true,
+        "policy_name": "fintech_policy",
+        "reason": "Schema inspection is read-only. No PII data records accessed.",
+        "risk_level": "low",
+        "rule_id": "ft-1",
+        "verdict": "allow"
+      },
+      "instruction": "Review the loan application data schema. Identify which\n        fields contain PII (SSN, income, address) and which are safe for\n        automated credit scoring. Output a field classification report.",
+      "mirror": {
+        "drift_detected": false,
+        "drift_score": 0.01,
+        "drift_threshold": 0.5,
+        "witness_recorded": true
+      },
+      "output": "Fields classified. PII restricted: SSN, raw_income. Safe: debt_to_income_ratio",
+      "status": "completed",
+      "step_id": "step1"
+    },
+    {
+      "action": "generate_credit_score",
+      "agent": "builder",
+      "governance": {
+        "allowed": true,
+        "conditions": [
+          "SSN field access denied",
+          "raw_income field access denied"
+        ],
+        "policy_checked": true,
+        "policy_name": "fintech_policy",
+        "reason": "PII fields (SSN, raw_income) blocked by recursive policy.",
+        "risk_level": "medium",
+        "rule_id": "ft-2",
+        "verdict": "allow_with_conditions"
+      },
+      "instruction": "Generate a credit risk score based on non-PII fields only.\n        The governance policy restricts access to SSN and raw income fields.\n        Use debt-to-income ratio and payment history instead.",
+      "mirror": {
+        "drift_detected": false,
+        "drift_score": 0.08,
+        "drift_threshold": 0.5,
+        "witness_recorded": true
+      },
+      "output": "Credit risk score: 720. Based on debt_to_income_ratio (0.32).",
+      "status": "completed",
+      "step_id": "step2"
+    },
+    {
+      "action": "validate_field_access_compliance",
+      "agent": "tester",
+      "governance": {
+        "allowed": true,
+        "conditions": [],
+        "policy_checked": true,
+        "policy_name": "fintech_policy",
+        "reason": "Compliance audit is a read-only validation operation.",
+        "risk_level": "low",
+        "rule_id": "ft-3",
+        "verdict": "allow"
+      },
+      "instruction": "Validate that the credit scoring model did not access\n        restricted PII fields. Generate a compliance test report confirming\n        field-level access governance was enforced.",
+      "mirror": {
+        "drift_detected": false,
+        "drift_score": 0.02,
+        "drift_threshold": 0.5,
+        "witness_recorded": true
+      },
+      "output": "Compliance check passed. 0 restricted field accesses detected in tracer.",
+      "status": "completed",
+      "step_id": "step3"
+    }
+  ],
+  "total_steps": 3,
+  "trace_count": 8,
+  "workflow_checksum": "8a00d5b071256397853b636b8079b1241a10a11333d2162dc38b2633c484a128",
+  "workflow_id": "fintech.loan_review"
 }

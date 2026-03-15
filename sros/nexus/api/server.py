@@ -3,8 +3,9 @@ SROS HTTP API Server
 
 FastAPI-based REST API for SROS operations.
 """
-from typing import Dict, Any
 import logging
+
+from ...version import get_release_version
 
 logger = logging.getLogger(__name__)
 
@@ -20,11 +21,12 @@ except ImportError:
 
 if FASTAPI_AVAILABLE:
     from .routes import register_routes
+    VERSION = get_release_version()
     
     app = FastAPI(
         title="SROS API",
         description="Sovereign Runtime Operating System API",
-        version="1.0.0"
+        version=VERSION
     )
     
     # CORS middleware
@@ -44,7 +46,7 @@ if FASTAPI_AVAILABLE:
         """Root endpoint."""
         return {
             "name": "SROS API",
-            "version": "1.0.0",
+            "version": VERSION,
             "status": "operational"
         }
     
