@@ -1,0 +1,104 @@
+{
+  "sros_version": "1.0.0-alpha",
+  "receipt_type": "workflow_execution",
+  "workflow_id": "governance_demo",
+  "run_id": "309f749f-6a9f-4c7a-834f-e18df5d62f42",
+  "started_at": "2026-03-15T04:08:06.311235+00:00",
+  "completed_at": "2026-03-15T04:08:06.640126+00:00",
+  "status": "success",
+  "total_steps": 3,
+  "steps": [
+    {
+      "step_id": "step1",
+      "agent": "architect",
+      "action": "analyze_requirements",
+      "instruction": "Evaluate system architecture for compliance readiness",
+      "output": "Architecture meets separation-of-concerns requirements. Proceed.",
+      "status": "completed",
+      "governance": {
+        "policy_checked": true,
+        "verdict": "allow",
+        "policy_name": "default_allow_read_operations",
+        "risk_level": "low",
+        "reason": "Read-only analysis operation on public requirements.",
+        "conditions": []
+      },
+      "mirror": {
+        "drift_score": 0.02,
+        "drift_threshold": 0.5,
+        "drift_detected": false,
+        "witness_recorded": true
+      }
+    },
+    {
+      "step_id": "step2",
+      "agent": "builder",
+      "action": "propose_code_change",
+      "instruction": "Add audit logging to the payment processing module",
+      "output": "Proposal generated: 12 lines added to payment_handler.py.",
+      "status": "completed",
+      "governance": {
+        "policy_checked": true,
+        "verdict": "allow_with_conditions",
+        "policy_name": "code_mutation_governance",
+        "risk_level": "medium",
+        "reason": "Code mutation proposed to payment module.",
+        "conditions": [
+          "Max 50-line diff enforced",
+          "Must pass test suite before commit"
+        ]
+      },
+      "mirror": {
+        "drift_score": 0.15,
+        "drift_threshold": 0.5,
+        "drift_detected": false,
+        "witness_recorded": true
+      }
+    },
+    {
+      "step_id": "step3",
+      "agent": "tester",
+      "action": "generate_validation_tests",
+      "instruction": "Generate pytest tests for the proposed audit logging changes",
+      "output": "Generated 4 test cases covering validation and logging.",
+      "status": "completed",
+      "governance": {
+        "policy_checked": true,
+        "verdict": "allow",
+        "policy_name": "test_generation_policy",
+        "risk_level": "low",
+        "reason": "Test generation is a permitted write operation to the test plane.",
+        "conditions": []
+      },
+      "mirror": {
+        "drift_score": 0.04,
+        "drift_threshold": 0.5,
+        "drift_detected": false,
+        "witness_recorded": true
+      }
+    }
+  ],
+  "receipt_chain": {
+    "step_hashes": [
+      "1e0fc33895e6537d",
+      "9352f11f97ce67d7",
+      "a7280ed4bda129ac"
+    ],
+    "chain_hash": "9a947e35a7ef7d90"
+  },
+  "governance_summary": {
+    "total_policy_checks": 3,
+    "verdicts": {
+      "allow": 2,
+      "allow_with_conditions": 1,
+      "deny": 0
+    },
+    "domain_blocked": []
+  },
+  "mirror_summary": {
+    "drift_detected": false,
+    "max_drift_score": 0.15,
+    "all_events_witnessed": true,
+    "total_traces": 8
+  }
+}

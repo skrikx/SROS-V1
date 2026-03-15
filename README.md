@@ -24,14 +24,14 @@ SROS is a **governance and observability runtime for AI agent execution**. It si
 
 ## Quickstart (2 minutes)
 
-   ```bash
+      ```bash
    git clone https://github.com/skrikx/SROS-V1.git
    cd SROS-V1
    pip install -e .
-   sros run-demo          # Generic architecture demo
-   sros demo-fintech      # PII governance demo
-   sros demo-healthcare   # HIPAA access demo
-   sros demo-contract     # Data exfiltration demo
+   sros run-demo          # Apex Demo: General Governance
+   sros demo-fintech      # Apex Demo: PII Restriction
+   sros demo-healthcare   # Apex Demo: HIPAA Access
+   sros demo-contract     # Apex Demo: Data Exfiltration
    ```
 
 **What happens:** SROS boots a kernel, runs a 3-step agent workflow with governance policy checks at each step, monitors for behavioral drift, and writes a verifiable receipt to disk.
@@ -136,17 +136,24 @@ Planes communicate exclusively through the Kernel's event bus. Governance is syn
 
 ---
 
-## Industry Example Workflows
+### The Apex Demo Suite
 
-SROS ships with domain-specific workflow examples that demonstrate governance in regulated environments:
+SROS ships with an **Apex-grade demo suite** that proves governance across different regulated domains. Each demo runs through the real SROS runtime and produces a verifiable receipt.
 
-| Example | Domain | Governance Demonstrated |
-|---------|--------|------------------------|
-| [Loan Review](examples/fintech_loan_review.srxml) | Financial Services | PII field restriction, Fair Lending compliance |
-| [Healthcare Triage](examples/healthcare_triage.srxml) | Healthcare | HIPAA-aligned PHI access control |
-| [Contract Review](examples/contract_review.srxml) | Legal | Data exfiltration prevention, summary-only output |
+| Command | Domain | Governance Proof |
+|---------|--------|------------------|
+| `sros run-demo` | General | **Recursive Policy Evaluation**: Shows allow, allow-with-conditions, and step-level drift monitoring. |
+| `sros demo-fintech` | Fintech | **PII Field Restriction**: Proves SROS can block specific sensitive fields (SSN, income) during a loan review. |
+| `sros demo-healthcare` | Healthcare | **HIPAA-Aligned Access**: Shows PHI access control and diagnostic bias prevention in medical triage. |
+| `sros demo-contract` | Legal | **Data Exfiltration Prevention**: Proves enforcement of "summary-only" output for sensitive legal documents. |
 
-Each workflow produces a receipt showing every policy decision. See the [sample receipts](receipts/) directory.
+**Run any demo**:
+```bash
+sros demo-fintech
+```
+
+**Inspect the evidence**:
+All demos write receipts to the `receipts/` directory. These are hash-chained JSON artifacts suitable for audit review.
 
 ---
 

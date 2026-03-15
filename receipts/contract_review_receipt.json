@@ -2,9 +2,9 @@
   "sros_version": "1.0.0-alpha",
   "receipt_type": "workflow_execution",
   "workflow_id": "legal.contract_review",
-  "run_id": "cb0f86ca-1196-4db5-98a0-38a6b5d7d75c",
-  "started_at": "2026-03-15T04:02:02.583139+00:00",
-  "completed_at": "2026-03-15T04:02:02.914752+00:00",
+  "run_id": "143b6718-9456-41c3-a5f1-09229316249e",
+  "started_at": "2026-03-15T04:08:07.935080+00:00",
+  "completed_at": "2026-03-15T04:08:08.261394+00:00",
   "status": "success",
   "total_steps": 3,
   "steps": [
@@ -20,7 +20,7 @@
         "verdict": "allow",
         "policy_name": "document_read_only_policy",
         "risk_level": "low",
-        "reason": "Document structure analysis is read-only.",
+        "reason": "Document structure analysis is a metadata-only read operation.",
         "conditions": []
       },
       "mirror": {
@@ -42,7 +42,7 @@
         "verdict": "allow_with_conditions",
         "policy_name": "data_exfiltration_prevention",
         "risk_level": "high",
-        "reason": "Policy restricts output to summaries only.",
+        "reason": "Policy restricts output to summaries only to prevent data exfiltration.",
         "conditions": [
           "Full clause text export denied",
           "Summary-only output enforced"
@@ -60,7 +60,7 @@
       "agent": "tester",
       "action": "validate_output_compliance",
       "instruction": "Validate that no full clause text was included in the\n        extraction output. Confirm that only summaries were emitted.\n        Generate a data governance compliance receipt.",
-      "output": "Data governance check passed. No full text in output.",
+      "output": "Data governance check passed. No full text in output payload.",
       "status": "completed",
       "governance": {
         "policy_checked": true,
@@ -80,11 +80,11 @@
   ],
   "receipt_chain": {
     "step_hashes": [
-      "651fe3cb10dc92b9",
-      "85cd93b0365a771f",
-      "ad21e13dd952c6d8"
+      "c5db16c1779af5f3",
+      "a1ab789fe8593e3c",
+      "7aee9db6cb337881"
     ],
-    "chain_hash": "467dad838fcd09f0"
+    "chain_hash": "360f8929e7f4c127"
   },
   "governance_summary": {
     "total_policy_checks": 3,

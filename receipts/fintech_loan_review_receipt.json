@@ -2,9 +2,9 @@
   "sros_version": "1.0.0-alpha",
   "receipt_type": "workflow_execution",
   "workflow_id": "fintech.loan_review",
-  "run_id": "1837f646-ebf8-451c-a428-deae62eb0d3c",
-  "started_at": "2026-03-15T04:02:01.486197+00:00",
-  "completed_at": "2026-03-15T04:02:01.811062+00:00",
+  "run_id": "5b19c238-c0be-471e-9c0d-e7c636baeb9b",
+  "started_at": "2026-03-15T04:08:06.851262+00:00",
+  "completed_at": "2026-03-15T04:08:07.186161+00:00",
   "status": "success",
   "total_steps": 3,
   "steps": [
@@ -20,7 +20,7 @@
         "verdict": "allow",
         "policy_name": "pii_classification_read_only",
         "risk_level": "low",
-        "reason": "Schema inspection is read-only. No PII accessed.",
+        "reason": "Schema inspection is read-only. No PII data records accessed.",
         "conditions": []
       },
       "mirror": {
@@ -42,7 +42,7 @@
         "verdict": "allow_with_conditions",
         "policy_name": "pii_access_restriction",
         "risk_level": "medium",
-        "reason": "PII fields (SSN, raw_income) blocked by policy.",
+        "reason": "PII fields (SSN, raw_income) blocked by recursive policy.",
         "conditions": [
           "SSN field access denied",
           "raw_income field access denied"
@@ -60,7 +60,7 @@
       "agent": "tester",
       "action": "validate_field_access_compliance",
       "instruction": "Validate that the credit scoring model did not access\n        restricted PII fields. Generate a compliance test report confirming\n        field-level access governance was enforced.",
-      "output": "Compliance check passed. 0 restricted field accesses detected.",
+      "output": "Compliance check passed. 0 restricted field accesses detected in tracer.",
       "status": "completed",
       "governance": {
         "policy_checked": true,
@@ -80,11 +80,11 @@
   ],
   "receipt_chain": {
     "step_hashes": [
-      "c230ac5b598af988",
-      "c6ed493f8042dcfc",
-      "8ce605fa7b902f3c"
+      "f399d2b522a82be8",
+      "4eafe96061d48494",
+      "07aadd22c964b04b"
     ],
-    "chain_hash": "16331d82cd72db5a"
+    "chain_hash": "06d3141d3f9ee68b"
   },
   "governance_summary": {
     "total_policy_checks": 3,

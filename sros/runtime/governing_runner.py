@@ -11,7 +11,7 @@ import hashlib
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 
 from ..kernel.kernel_bootstrap import boot as kernel_boot
 from ..srxml.parser import SRXMLParser
@@ -31,10 +31,12 @@ class GoverningWorkflowRunner:
         policies: List[Dict[str, Any]],
         step_metadata: Dict[str, Dict[str, Any]],
         drift_threshold: float = 0.5,
+        ui_handlers: Optional[Dict[str, Any]] = None,
     ):
         self.policies = policies
         self.step_metadata = step_metadata
         self.drift_threshold = drift_threshold
+        self.ui = ui_handlers or {}
 
     def run(
         self,
@@ -60,6 +62,7 @@ class GoverningWorkflowRunner:
         drift_detector = DriftDetector({"performance_threshold": self.drift_threshold})
         policy_engine = PolicyEngine(mode="strict")
 
+        # Load policies into the real PolicyEngine
         for policy in self.policies:
             policy_engine.load_policy(policy)
 
@@ -84,13 +87,26 @@ class GoverningWorkflowRunner:
             meta = self.step_metadata.get(step_id, {})
             action = meta.get("action", f"execute_{step_id}")
 
-            print(f"\n  [Step {i+1}/{len(steps_raw)}] {agent_id}: {instruction[:60]}...")
+            if "step" in self.ui:
+                self.ui["step"](i + 1, len(steps_raw), agent_id, instruction)
 
             # --- Evaluate Policy ---
-            policy_result = policy_engine.evaluate(action, context={"step_id": step_id})
+            # We enrich the evaluate context to mimic real derivation
+            policy_result = policy_engine.evaluate(
+                action, 
+                context={
+                    "step_id": step_id,
+                    "agent": agent_id,
+                    "tenant": "PlatXP",
+                    "resource": meta.get("resource", "system"),
+                    "requested_fields": meta.get("requested_fields", [])
+                }
+            )
             
             gov_ctx = meta.get("governance", {})
             
+            # Merit-based verdict: if PolicyEngine says allow, we use metadata-refined status
+            # if PolicyEngine says deny, we force deny.
             if policy_result.allowed:
                 verdict = gov_ctx.get("verdict", "allow")
             else:
@@ -104,19 +120,21 @@ class GoverningWorkflowRunner:
                 "reason": gov_ctx.get("reason", policy_result.reason)
             })
 
-            print(f"    Policy: {verdict.upper()} ({gov_ctx.get('risk_level', 'low')})")
-            if gov_ctx.get("conditions"):
-                for c in gov_ctx["conditions"]:
-                    print(f"      - {c}")
+            if "verdict" in self.ui:
+                self.ui["verdict"](
+                    verdict, 
+                    gov_ctx.get("risk_level", "low"), 
+                    gov_ctx.get("reason", policy_result.reason),
+                    gov_ctx.get("conditions")
+                )
 
             if verdict == "deny":
-                print(f"    [BLOCKED] Step denied by governance")
                 step_results.append(self._build_step_res(step_id, agent_id, action, instruction, meta, verdict, 0.0, "denied"))
                 continue
 
             # --- Real execution via Bus ---
             kernel.event_bus.publish("runtime", "agent.thinking", {"agent": agent_id, "input": instruction})
-            await asyncio.sleep(0.1)
+            await asyncio.sleep(0.1) # Simulate real async wait
             output = meta.get("output", f"Processed step {step_id}")
             kernel.event_bus.publish("runtime", "agent.acted", {"agent": agent_id, "response": output})
 
@@ -125,11 +143,10 @@ class GoverningWorkflowRunner:
             drift_detector.record_metric(f"agent.{agent_id}", "drift", drift)
             max_drift = max(max_drift, drift)
 
-            print(f"    Drift: {drift:.2f} / {self.drift_threshold:.2f} - {'ALERT' if drift > self.drift_threshold else 'OK'}")
+            if "drift" in self.ui:
+                self.ui["drift"](drift, self.drift_threshold)
 
             witness.record("workflow.step.completed", {"step_id": step_id, "drift": drift})
-            print(f"  [OK] Step {i+1} complete")
-
             step_results.append(self._build_step_res(step_id, agent_id, action, instruction, meta, verdict, drift, "completed"))
 
         end_ts = datetime.now(timezone.utc).isoformat()

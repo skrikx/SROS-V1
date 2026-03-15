@@ -2,9 +2,9 @@
   "sros_version": "1.0.0-alpha",
   "receipt_type": "workflow_execution",
   "workflow_id": "healthcare.triage",
-  "run_id": "a7ccf53f-d7c4-45da-b8ea-6c6e0a6df571",
-  "started_at": "2026-03-15T04:02:02.036102+00:00",
-  "completed_at": "2026-03-15T04:02:02.371323+00:00",
+  "run_id": "cb76d934-addd-44ea-a5c6-765290ceceb1",
+  "started_at": "2026-03-15T04:08:07.394845+00:00",
+  "completed_at": "2026-03-15T04:08:07.731660+00:00",
   "status": "success",
   "total_steps": 3,
   "steps": [
@@ -20,7 +20,7 @@
         "verdict": "allow_with_conditions",
         "policy_name": "phi_access_restriction",
         "risk_level": "medium",
-        "reason": "Patient data access requested. Identity fields blocked.",
+        "reason": "Patient data access requested. Identity fields (PHI) blocked.",
         "conditions": [
           "Patient name denied",
           "DOB denied",
@@ -46,9 +46,9 @@
         "verdict": "allow_with_conditions",
         "policy_name": "diagnosis_history_restriction",
         "risk_level": "medium",
-        "reason": "Diagnosis history access blocked to prevent bias.",
+        "reason": "Diagnosis history access blocked to prevent diagnostic bias.",
         "conditions": [
-          "diagnosis_history access denied"
+          "Diagnosis history access denied"
         ]
       },
       "mirror": {
@@ -83,11 +83,11 @@
   ],
   "receipt_chain": {
     "step_hashes": [
-      "2aa7b117d4b5f862",
-      "17ef8e8679ee3e96",
+      "4490ea7f8a6487ce",
+      "6e6f87f04119c47b",
       "57092678b0398eb5"
     ],
-    "chain_hash": "10d8b4c23020540f"
+    "chain_hash": "85f114c7de06cd5a"
   },
   "governance_summary": {
     "total_policy_checks": 3,
