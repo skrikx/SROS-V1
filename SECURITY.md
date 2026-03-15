@@ -6,7 +6,10 @@ SROS v1 uses a single hardened line. Security fixes are applied to the latest `m
 
 ## Reporting a Vulnerability
 
-Report vulnerabilities privately to: `security@platxp.example`.
+Please use one of the private channels below:
+
+- GitHub Security Advisories private reporting for this repository
+- If private reporting is unavailable, open a minimal public issue without exploit details and request a secure contact handoff
 
 Please include:
 - Affected version and commit hash
@@ -14,7 +17,7 @@ Please include:
 - Expected vs actual behavior
 - Impact assessment
 
-Do not open public issues for suspected vulnerabilities until triage is complete.
+Do not open detailed public issues for suspected vulnerabilities until triage is complete.
 
 ## Response Targets
 
