@@ -24,12 +24,15 @@ SROS is a **governance and observability runtime for AI agent execution**. It si
 
 ## Quickstart (2 minutes)
 
-```bash
-git clone https://github.com/skrikx/SROS-V1.git
-cd SROS-V1
-pip install -e .
-sros run-demo
-```
+   ```bash
+   git clone https://github.com/skrikx/SROS-V1.git
+   cd SROS-V1
+   pip install -e .
+   sros run-demo          # Generic architecture demo
+   sros demo-fintech      # PII governance demo
+   sros demo-healthcare   # HIPAA access demo
+   sros demo-contract     # Data exfiltration demo
+   ```
 
 **What happens:** SROS boots a kernel, runs a 3-step agent workflow with governance policy checks at each step, monitors for behavioral drift, and writes a verifiable receipt to disk.
 
@@ -151,7 +154,7 @@ Each workflow produces a receipt showing every policy decision. See the [sample 
 
 If you are evaluating SROS for your organization:
 
-1. **Today**: Clone, install, run `sros run-demo`, inspect the receipt
+1. **Today**: Clone, install, run `sros run-demo` or `sros demo-fintech`, inspect the receipt
 2. **This week**: Review the [industry examples](examples/) and [sample receipts](receipts/)
 3. **Next step**: Read the [Pilot Guide](docs/PILOT_GUIDE.md) for a 2-week evaluation plan
 

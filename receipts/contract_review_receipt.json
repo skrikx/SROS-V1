@@ -2,25 +2,26 @@
   "sros_version": "1.0.0-alpha",
   "receipt_type": "workflow_execution",
   "workflow_id": "legal.contract_review",
-  "run_id": "c3d4e5f6-7890-1234-cdef-012345678901",
-  "started_at": "2026-03-14T22:10:00.000Z",
-  "completed_at": "2026-03-14T22:10:01.300Z",
+  "run_id": "cb0f86ca-1196-4db5-98a0-38a6b5d7d75c",
+  "started_at": "2026-03-15T04:02:02.583139+00:00",
+  "completed_at": "2026-03-15T04:02:02.914752+00:00",
   "status": "success",
   "total_steps": 3,
   "steps": [
     {
-      "step_id": "step_1",
+      "step_id": "step1",
       "agent": "architect",
       "action": "analyze_contract_structure",
-      "input": "Identify key clause categories: liability, indemnification, termination, payment",
-      "output": "Contract structure analyzed. 4 clause categories identified with 23 total clauses. Read-only access confirmed.",
+      "instruction": "Analyze the contract structure and identify key clause\n        categories: liability, indemnification, termination, payment terms.\n        Access is read-only. No modification of source document allowed.",
+      "output": "Contract structure analyzed. 4 clause categories identified.",
       "status": "completed",
       "governance": {
         "policy_checked": true,
         "verdict": "allow",
         "policy_name": "document_read_only_policy",
         "risk_level": "low",
-        "reason": "Document structure analysis is read-only. No modification risk."
+        "reason": "Document structure analysis is read-only.",
+        "conditions": []
       },
       "mirror": {
         "drift_score": 0.03,
@@ -30,21 +31,21 @@
       }
     },
     {
-      "step_id": "step_2",
+      "step_id": "step2",
       "agent": "builder",
       "action": "extract_risk_clauses",
-      "input": "Extract summaries of risk-relevant clauses. Full clause text must not leave governed environment.",
-      "output": "Extracted 8 risk-relevant clause summaries. Liability cap: $5M. Indemnification: mutual. Termination: 30-day notice. Full text retained in governed environment only.",
+      "instruction": "Extract risk-relevant clauses from the identified\n        categories. The governance policy restricts output to summaries\n        only - full clause text must not leave the governed environment.",
+      "output": "Extracted 8 clause summaries. Full text retained in governed environment.",
       "status": "completed",
       "governance": {
         "policy_checked": true,
         "verdict": "allow_with_conditions",
         "policy_name": "data_exfiltration_prevention",
         "risk_level": "high",
-        "reason": "Clause extraction requested. Policy restricts output to summaries only. Full clause text blocked from export.",
+        "reason": "Policy restricts output to summaries only.",
         "conditions": [
           "Full clause text export denied",
-          "Only summary-length extractions permitted in output"
+          "Summary-only output enforced"
         ]
       },
       "mirror": {
@@ -55,18 +56,19 @@
       }
     },
     {
-      "step_id": "step_3",
+      "step_id": "step3",
       "agent": "tester",
       "action": "validate_output_compliance",
-      "input": "Verify no full clause text in extraction output",
-      "output": "Data governance check passed. All outputs are summary-length (under 50 words per clause). No full clause text detected in output payload.",
+      "instruction": "Validate that no full clause text was included in the\n        extraction output. Confirm that only summaries were emitted.\n        Generate a data governance compliance receipt.",
+      "output": "Data governance check passed. No full text in output.",
       "status": "completed",
       "governance": {
         "policy_checked": true,
         "verdict": "allow",
         "policy_name": "compliance_audit_policy",
         "risk_level": "low",
-        "reason": "Output validation is a read-only compliance check."
+        "reason": "Output validation is a read-only compliance check.",
+        "conditions": []
       },
       "mirror": {
         "drift_score": 0.04,
@@ -77,17 +79,28 @@
     }
   ],
   "receipt_chain": {
-    "step_hashes": ["1a2b3c4d5e6f7a8b", "2b3c4d5e6f7a8b9c", "3c4d5e6f7a8b9c0d"],
-    "chain_hash": "4d5e6f7a8b9c0d1e"
+    "step_hashes": [
+      "651fe3cb10dc92b9",
+      "85cd93b0365a771f",
+      "ad21e13dd952c6d8"
+    ],
+    "chain_hash": "467dad838fcd09f0"
   },
   "governance_summary": {
     "total_policy_checks": 3,
-    "verdicts": { "allow": 2, "allow_with_conditions": 1, "deny": 0 },
-    "data_exfiltration_blocked": ["full_clause_text"]
+    "verdicts": {
+      "allow": 2,
+      "allow_with_conditions": 1,
+      "deny": 0
+    },
+    "domain_blocked": [
+      "full_clause_text"
+    ]
   },
   "mirror_summary": {
     "drift_detected": false,
     "max_drift_score": 0.22,
-    "all_events_witnessed": true
+    "all_events_witnessed": true,
+    "total_traces": 8
   }
 }

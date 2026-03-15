@@ -57,7 +57,7 @@ your AI agents and the systems they interact with.
 
 | Day | Activity | Output |
 |-----|----------|--------|
-| 1 | Clone repo, install, run `sros run-demo` | Inspect governance receipt |
+| 1 | Clone repo, install, run `sros run-demo` or `sros demo-fintech` | Inspect governance receipt |
 | 2 | Review industry examples matching your domain | Identify governance patterns |
 | 3 | Write a custom SRXML workflow for one internal use case | Custom workflow file |
 | 4 | Configure governance policies for your data sensitivity requirements | Policy definitions |

@@ -2,27 +2,26 @@
   "sros_version": "1.0.0-alpha",
   "receipt_type": "workflow_execution",
   "workflow_id": "governance_demo",
-  "run_id": "22889a30-0fe2-48c2-b6f9-a4749741c7e5",
-  "started_at": "2026-03-14T22:58:00.599764+00:00",
-  "completed_at": "2026-03-14T22:58:01.503418+00:00",
+  "run_id": "9789f0c5-7d9d-4a33-a2ee-80b6d17cd844",
+  "started_at": "2026-03-15T04:02:00.954399+00:00",
+  "completed_at": "2026-03-15T04:02:01.278999+00:00",
   "status": "success",
   "total_steps": 3,
   "steps": [
     {
-      "step_id": "step_1",
+      "step_id": "step1",
       "agent": "architect",
       "action": "analyze_requirements",
-      "input": "Evaluate system architecture for compliance readiness",
-      "output": "Architecture meets separation-of-concerns requirements. Governance plane is decoupled from runtime. Proceed.",
-      "started_at": "2026-03-14T22:58:00.600770+00:00",
-      "completed_at": "2026-03-14T22:58:00.901641+00:00",
+      "instruction": "Evaluate system architecture for compliance readiness",
+      "output": "Architecture meets separation-of-concerns requirements. Proceed.",
       "status": "completed",
       "governance": {
         "policy_checked": true,
         "verdict": "allow",
         "policy_name": "default_allow_read_operations",
         "risk_level": "low",
-        "reason": "Read-only analysis operation. No mutation risk."
+        "reason": "Read-only analysis operation.",
+        "conditions": []
       },
       "mirror": {
         "drift_score": 0.02,
@@ -32,23 +31,21 @@
       }
     },
     {
-      "step_id": "step_2",
+      "step_id": "step2",
       "agent": "builder",
       "action": "propose_code_change",
-      "input": "Add audit logging to the payment processing module",
-      "output": "Proposal generated: 12 lines added to payment_handler.py. Changes are scoped to logging only, no business logic mutation.",
-      "started_at": "2026-03-14T22:58:00.901641+00:00",
-      "completed_at": "2026-03-14T22:58:01.202480+00:00",
+      "instruction": "Add audit logging to the payment processing module",
+      "output": "Proposal generated: 12 lines added to payment_handler.py.",
       "status": "completed",
       "governance": {
         "policy_checked": true,
         "verdict": "allow_with_conditions",
         "policy_name": "code_mutation_governance",
         "risk_level": "medium",
-        "reason": "Code mutation proposed. Scoped to logging-only additions. No business logic changes detected. Conditionally allowed.",
+        "reason": "Code mutation proposed. Conditionally allowed.",
         "conditions": [
-          "Changes must not exceed 50-line diff limit",
-          "Changes must pass automated test suite before merge"
+          "Max 50-line diff enforced",
+          "Must pass test suite"
         ]
       },
       "mirror": {
@@ -59,20 +56,19 @@
       }
     },
     {
-      "step_id": "step_3",
+      "step_id": "step3",
       "agent": "tester",
       "action": "generate_validation_tests",
-      "input": "Generate pytest tests for the proposed audit logging changes",
-      "output": "Generated 4 test cases covering: log format validation, log rotation, error path logging, and PII redaction check.",
-      "started_at": "2026-03-14T22:58:01.202480+00:00",
-      "completed_at": "2026-03-14T22:58:01.503418+00:00",
+      "instruction": "Generate pytest tests for the proposed audit logging changes",
+      "output": "Generated 4 test cases covering validation and logging.",
       "status": "completed",
       "governance": {
         "policy_checked": true,
         "verdict": "allow",
         "policy_name": "test_generation_policy",
         "risk_level": "low",
-        "reason": "Test generation is a read-and-write-test operation. No production system mutation."
+        "reason": "Test generation is a read-and-write-test operation.",
+        "conditions": []
       },
       "mirror": {
         "drift_score": 0.04,
@@ -84,11 +80,11 @@
   ],
   "receipt_chain": {
     "step_hashes": [
-      "c40c5d857da654b8",
-      "8db4ae000f03ffaa",
-      "06fe2d67c018d10d"
+      "7230ea5f5b3c7286",
+      "da50ad15fb441b00",
+      "47a4132a13e17ede"
     ],
-    "chain_hash": "2b5558bb442e9b40"
+    "chain_hash": "4402664858a890f8"
   },
   "governance_summary": {
     "total_policy_checks": 3,
@@ -96,11 +92,13 @@
       "allow": 2,
       "allow_with_conditions": 1,
       "deny": 0
-    }
+    },
+    "domain_blocked": []
   },
   "mirror_summary": {
     "drift_detected": false,
     "max_drift_score": 0.15,
-    "all_events_witnessed": true
+    "all_events_witnessed": true,
+    "total_traces": 8
   }
 }

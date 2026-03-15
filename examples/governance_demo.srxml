@@ -1,0 +1,21 @@
+<workflow id="governance_demo" name="Governance Receipt Demo" xmlns="https://sros.sros/schema/workflow">
+    <identity>
+        <system_name>Governance Demo Pipeline</system_name>
+        <purpose>Simulate a generic 3-step pipeline illustrating policy enforcement.</purpose>
+    </identity>
+
+    <step id="step1" order="1">
+        <agent>architect</agent>
+        <instruction>Evaluate system architecture for compliance readiness</instruction>
+    </step>
+
+    <step id="step2" order="2">
+        <agent>builder</agent>
+        <instruction>Add audit logging to the payment processing module</instruction>
+    </step>
+
+    <step id="step3" order="3">
+        <agent>tester</agent>
+        <instruction>Generate pytest tests for the proposed audit logging changes</instruction>
+    </step>
+</workflow>
