@@ -1,106 +1,115 @@
 {
-  "sros_version": "1.0.0-alpha",
-  "receipt_type": "workflow_execution",
-  "workflow_id": "legal.contract_review",
-  "run_id": "143b6718-9456-41c3-a5f1-09229316249e",
-  "started_at": "2026-03-15T04:08:07.935080+00:00",
-  "completed_at": "2026-03-15T04:08:08.261394+00:00",
-  "status": "success",
-  "total_steps": 3,
-  "steps": [
-    {
-      "step_id": "step1",
-      "agent": "architect",
-      "action": "analyze_contract_structure",
-      "instruction": "Analyze the contract structure and identify key clause\n        categories: liability, indemnification, termination, payment terms.\n        Access is read-only. No modification of source document allowed.",
-      "output": "Contract structure analyzed. 4 clause categories identified.",
-      "status": "completed",
-      "governance": {
-        "policy_checked": true,
-        "verdict": "allow",
-        "policy_name": "document_read_only_policy",
-        "risk_level": "low",
-        "reason": "Document structure analysis is a metadata-only read operation.",
-        "conditions": []
-      },
-      "mirror": {
-        "drift_score": 0.03,
-        "drift_threshold": 0.5,
-        "drift_detected": false,
-        "witness_recorded": true
-      }
-    },
-    {
-      "step_id": "step2",
-      "agent": "builder",
-      "action": "extract_risk_clauses",
-      "instruction": "Extract risk-relevant clauses from the identified\n        categories. The governance policy restricts output to summaries\n        only - full clause text must not leave the governed environment.",
-      "output": "Extracted 8 clause summaries. Full text retained in governed environment.",
-      "status": "completed",
-      "governance": {
-        "policy_checked": true,
-        "verdict": "allow_with_conditions",
-        "policy_name": "data_exfiltration_prevention",
-        "risk_level": "high",
-        "reason": "Policy restricts output to summaries only to prevent data exfiltration.",
-        "conditions": [
-          "Full clause text export denied",
-          "Summary-only output enforced"
-        ]
-      },
-      "mirror": {
-        "drift_score": 0.22,
-        "drift_threshold": 0.5,
-        "drift_detected": false,
-        "witness_recorded": true
-      }
-    },
-    {
-      "step_id": "step3",
-      "agent": "tester",
-      "action": "validate_output_compliance",
-      "instruction": "Validate that no full clause text was included in the\n        extraction output. Confirm that only summaries were emitted.\n        Generate a data governance compliance receipt.",
-      "output": "Data governance check passed. No full text in output payload.",
-      "status": "completed",
-      "governance": {
-        "policy_checked": true,
-        "verdict": "allow",
-        "policy_name": "compliance_audit_policy",
-        "risk_level": "low",
-        "reason": "Output validation is a read-only compliance check.",
-        "conditions": []
-      },
-      "mirror": {
-        "drift_score": 0.04,
-        "drift_threshold": 0.5,
-        "drift_detected": false,
-        "witness_recorded": true
-      }
-    }
-  ],
-  "receipt_chain": {
-    "step_hashes": [
-      "c5db16c1779af5f3",
-      "a1ab789fe8593e3c",
-      "7aee9db6cb337881"
-    ],
-    "chain_hash": "360f8929e7f4c127"
-  },
+  "completed_at": "2026-03-15T23:33:19.498252+00:00",
   "governance_summary": {
+    "domain_blocked": [
+      "full_clause_text"
+    ],
     "total_policy_checks": 3,
     "verdicts": {
       "allow": 2,
       "allow_with_conditions": 1,
       "deny": 0
-    },
-    "domain_blocked": [
-      "full_clause_text"
-    ]
+    }
   },
   "mirror_summary": {
+    "all_events_witnessed": true,
     "drift_detected": false,
     "max_drift_score": 0.22,
-    "all_events_witnessed": true,
     "total_traces": 8
-  }
+  },
+  "receipt_chain": {
+    "chain_hash": "9618029efd4fbdbd",
+    "step_hashes": [
+      "eac932a35d3dd84f",
+      "2752a077a952878d",
+      "e69557e302e5e8f3"
+    ]
+  },
+  "receipt_type": "workflow_execution",
+  "run_id": "93498fff-e0f3-4c69-9134-0724fe9203a8",
+  "schema_version": "1.0.0",
+  "sros_version": "v1.0.0",
+  "started_at": "2026-03-15T23:33:19.189710+00:00",
+  "status": "success",
+  "steps": [
+    {
+      "action": "analyze_contract_structure",
+      "agent": "architect",
+      "governance": {
+        "allowed": true,
+        "conditions": [],
+        "policy_checked": true,
+        "policy_name": "contract_policy",
+        "reason": "Document structure analysis is a metadata-only read operation.",
+        "risk_level": "low",
+        "rule_id": "ct-1",
+        "verdict": "allow"
+      },
+      "instruction": "Analyze the contract structure and identify key clause\n        categories: liability, indemnification, termination, payment terms.\n        Access is read-only. No modification of source document allowed.",
+      "mirror": {
+        "drift_detected": false,
+        "drift_score": 0.03,
+        "drift_threshold": 0.5,
+        "witness_recorded": true
+      },
+      "output": "Contract structure analyzed. 4 clause categories identified.",
+      "status": "completed",
+      "step_id": "step1"
+    },
+    {
+      "action": "extract_risk_clauses",
+      "agent": "builder",
+      "governance": {
+        "allowed": true,
+        "conditions": [
+          "Full clause text export denied",
+          "Summary-only output enforced"
+        ],
+        "policy_checked": true,
+        "policy_name": "contract_policy",
+        "reason": "Policy restricts output to summaries only to prevent data exfiltration.",
+        "risk_level": "high",
+        "rule_id": "ct-2",
+        "verdict": "allow_with_conditions"
+      },
+      "instruction": "Extract risk-relevant clauses from the identified\n        categories. The governance policy restricts output to summaries\n        only - full clause text must not leave the governed environment.",
+      "mirror": {
+        "drift_detected": false,
+        "drift_score": 0.22,
+        "drift_threshold": 0.5,
+        "witness_recorded": true
+      },
+      "output": "Extracted 8 clause summaries. Full text retained in governed environment.",
+      "status": "completed",
+      "step_id": "step2"
+    },
+    {
+      "action": "validate_output_compliance",
+      "agent": "tester",
+      "governance": {
+        "allowed": true,
+        "conditions": [],
+        "policy_checked": true,
+        "policy_name": "contract_policy",
+        "reason": "Output validation is a read-only compliance check.",
+        "risk_level": "low",
+        "rule_id": "ct-3",
+        "verdict": "allow"
+      },
+      "instruction": "Validate that no full clause text was included in the\n        extraction output. Confirm that only summaries were emitted.\n        Generate a data governance compliance receipt.",
+      "mirror": {
+        "drift_detected": false,
+        "drift_score": 0.04,
+        "drift_threshold": 0.5,
+        "witness_recorded": true
+      },
+      "output": "Data governance check passed. No full text in output payload.",
+      "status": "completed",
+      "step_id": "step3"
+    }
+  ],
+  "total_steps": 3,
+  "trace_count": 8,
+  "workflow_checksum": "c9e404af2e73bb0a79b047dd8c1df4630b465ba22d75d87d25426beac602f848",
+  "workflow_id": "legal.contract_review"
 }

@@ -1,112 +1,121 @@
 {
-  "sros_version": "1.0.0-alpha",
-  "receipt_type": "workflow_execution",
-  "workflow_id": "healthcare.triage",
-  "run_id": "cb76d934-addd-44ea-a5c6-765290ceceb1",
-  "started_at": "2026-03-15T04:08:07.394845+00:00",
-  "completed_at": "2026-03-15T04:08:07.731660+00:00",
-  "status": "success",
-  "total_steps": 3,
-  "steps": [
-    {
-      "step_id": "step1",
-      "agent": "architect",
-      "action": "classify_symptom_severity",
-      "instruction": "Evaluate the patient intake form and classify symptom\n        severity. Access is limited to symptom and vitals fields only.\n        Patient identity fields (name, DOB, MRN) are governance-restricted\n        at this stage.",
-      "output": "Severity classification: moderate. Elevated HR (102).",
-      "status": "completed",
-      "governance": {
-        "policy_checked": true,
-        "verdict": "allow_with_conditions",
-        "policy_name": "phi_access_restriction",
-        "risk_level": "medium",
-        "reason": "Patient data access requested. Identity fields (PHI) blocked.",
-        "conditions": [
-          "Patient name denied",
-          "DOB denied",
-          "MRN denied"
-        ]
-      },
-      "mirror": {
-        "drift_score": 0.05,
-        "drift_threshold": 0.5,
-        "drift_detected": false,
-        "witness_recorded": true
-      }
-    },
-    {
-      "step_id": "step2",
-      "agent": "builder",
-      "action": "generate_triage_score",
-      "instruction": "Generate a triage priority score (1-5) based on symptom\n        severity and vital signs. The governance policy blocks access to\n        diagnosis history to prevent bias in initial triage scoring.",
-      "output": "Triage priority: 2. Recommend cardiac evaluation within 1 hr.",
-      "status": "completed",
-      "governance": {
-        "policy_checked": true,
-        "verdict": "allow_with_conditions",
-        "policy_name": "diagnosis_history_restriction",
-        "risk_level": "medium",
-        "reason": "Diagnosis history access blocked to prevent diagnostic bias.",
-        "conditions": [
-          "Diagnosis history access denied"
-        ]
-      },
-      "mirror": {
-        "drift_score": 0.12,
-        "drift_threshold": 0.5,
-        "drift_detected": false,
-        "witness_recorded": true
-      }
-    },
-    {
-      "step_id": "step3",
-      "agent": "tester",
-      "action": "audit_phi_access",
-      "instruction": "Audit the triage decision path. Validate that no\n        restricted PHI fields were accessed during scoring. Generate a\n        compliance receipt confirming HIPAA-aligned field-level governance.",
-      "output": "HIPAA compliance check passed. 0 unauthorized PHI accesses detected.",
-      "status": "completed",
-      "governance": {
-        "policy_checked": true,
-        "verdict": "allow",
-        "policy_name": "compliance_audit_policy",
-        "risk_level": "low",
-        "reason": "Compliance audit operation. Read-only.",
-        "conditions": []
-      },
-      "mirror": {
-        "drift_score": 0.03,
-        "drift_threshold": 0.5,
-        "drift_detected": false,
-        "witness_recorded": true
-      }
-    }
-  ],
-  "receipt_chain": {
-    "step_hashes": [
-      "4490ea7f8a6487ce",
-      "6e6f87f04119c47b",
-      "57092678b0398eb5"
-    ],
-    "chain_hash": "85f114c7de06cd5a"
-  },
+  "completed_at": "2026-03-15T23:33:18.181309+00:00",
   "governance_summary": {
-    "total_policy_checks": 3,
-    "verdicts": {
-      "allow": 1,
-      "allow_with_conditions": 2,
-      "deny": 0
-    },
     "domain_blocked": [
       "patient_name",
       "dob",
       "mrn",
       "diagnosis_history"
-    ]
+    ],
+    "total_policy_checks": 3,
+    "verdicts": {
+      "allow": 1,
+      "allow_with_conditions": 2,
+      "deny": 0
+    }
   },
   "mirror_summary": {
+    "all_events_witnessed": true,
     "drift_detected": false,
     "max_drift_score": 0.12,
-    "all_events_witnessed": true,
     "total_traces": 8
-  }
+  },
+  "receipt_chain": {
+    "chain_hash": "d268dd27f26e4473",
+    "step_hashes": [
+      "e0ba46ac72d96f52",
+      "020901847f2b5b36",
+      "6611c079d399555c"
+    ]
+  },
+  "receipt_type": "workflow_execution",
+  "run_id": "9bb97fa4-20a1-4a7c-8625-4eaede2ec072",
+  "schema_version": "1.0.0",
+  "sros_version": "v1.0.0",
+  "started_at": "2026-03-15T23:33:17.873739+00:00",
+  "status": "success",
+  "steps": [
+    {
+      "action": "classify_symptom_severity",
+      "agent": "architect",
+      "governance": {
+        "allowed": true,
+        "conditions": [
+          "Patient name denied",
+          "DOB denied",
+          "MRN denied"
+        ],
+        "policy_checked": true,
+        "policy_name": "healthcare_policy",
+        "reason": "Patient data access requested. Identity fields (PHI) blocked.",
+        "risk_level": "medium",
+        "rule_id": "hc-1",
+        "verdict": "allow_with_conditions"
+      },
+      "instruction": "Evaluate the patient intake form and classify symptom\n        severity. Access is limited to symptom and vitals fields only.\n        Patient identity fields (name, DOB, MRN) are governance-restricted\n        at this stage.",
+      "mirror": {
+        "drift_detected": false,
+        "drift_score": 0.05,
+        "drift_threshold": 0.5,
+        "witness_recorded": true
+      },
+      "output": "Severity classification: moderate. Elevated HR (102).",
+      "status": "completed",
+      "step_id": "step1"
+    },
+    {
+      "action": "generate_triage_score",
+      "agent": "builder",
+      "governance": {
+        "allowed": true,
+        "conditions": [
+          "Diagnosis history access denied"
+        ],
+        "policy_checked": true,
+        "policy_name": "healthcare_policy",
+        "reason": "Diagnosis history access blocked to prevent diagnostic bias.",
+        "risk_level": "medium",
+        "rule_id": "hc-2",
+        "verdict": "allow_with_conditions"
+      },
+      "instruction": "Generate a triage priority score (1-5) based on symptom\n        severity and vital signs. The governance policy blocks access to\n        diagnosis history to prevent bias in initial triage scoring.",
+      "mirror": {
+        "drift_detected": false,
+        "drift_score": 0.12,
+        "drift_threshold": 0.5,
+        "witness_recorded": true
+      },
+      "output": "Triage priority: 2. Recommend cardiac evaluation within 1 hr.",
+      "status": "completed",
+      "step_id": "step2"
+    },
+    {
+      "action": "audit_phi_access",
+      "agent": "tester",
+      "governance": {
+        "allowed": true,
+        "conditions": [],
+        "policy_checked": true,
+        "policy_name": "healthcare_policy",
+        "reason": "Compliance audit operation. Read-only.",
+        "risk_level": "low",
+        "rule_id": "hc-3",
+        "verdict": "allow"
+      },
+      "instruction": "Audit the triage decision path. Validate that no\n        restricted PHI fields were accessed during scoring. Generate a\n        compliance receipt confirming HIPAA-aligned field-level governance.",
+      "mirror": {
+        "drift_detected": false,
+        "drift_score": 0.03,
+        "drift_threshold": 0.5,
+        "witness_recorded": true
+      },
+      "output": "HIPAA compliance check passed. 0 unauthorized PHI accesses detected.",
+      "status": "completed",
+      "step_id": "step3"
+    }
+  ],
+  "total_steps": 3,
+  "trace_count": 8,
+  "workflow_checksum": "f1f2fcfeb5f7802ff48be3f6b9877f4492412507fcbca7e964cdddcaec465aa0",
+  "workflow_id": "healthcare.triage"
 }
