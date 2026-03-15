@@ -1,7 +1,7 @@
 """
-Drift Detector
+Metric Threshold Drift Detector
 
-Detects anomalies and performance drift in SROS operations.
+Detects metric-threshold drift and simple outlier anomalies in SROS operations.
 """
 from typing import Dict, Any, List
 import time
@@ -12,13 +12,9 @@ logger = logging.getLogger(__name__)
 
 class DriftDetector:
     """
-    Detects drift and anomalies in system behavior.
-    
-    Features:
-    - Performance drift detection
-    - Error rate monitoring
-    - Anomaly detection
-    - Trend analysis
+    Detects metric-threshold drift and basic statistical anomalies.
+
+    This component does not provide semantic or cognitive drift intelligence.
     """
     
     def __init__(self, config: Dict[str, Any] = None):
@@ -82,8 +78,11 @@ class DriftDetector:
             
             if abs(drift) > self.performance_threshold:
                 logger.warning(
-                    f"Drift detected: {key} = {value} "
-                    f"(baseline: {baseline}, drift: {drift:.1%})"
+                    "Metric threshold drift detected: %s = %s (baseline: %s, drift: %.1f%%)",
+                    key,
+                    value,
+                    baseline,
+                    drift * 100,
                 )
     
     def detect_anomalies(self, component: str = None) -> List[Dict[str, Any]]:
@@ -131,11 +130,24 @@ class DriftDetector:
         return anomalies
     
     def get_drift_report(self) -> Dict[str, Any]:
-        """Generate drift report."""
+        """Generate a truthful metric-threshold drift report."""
+        threshold_breaches = 0
+        for entry in self.metrics:
+            key = f"{entry['component']}.{entry['metric']}"
+            baseline = self.baselines.get(key)
+            if baseline and baseline > 0:
+                drift_pct = abs((entry["value"] - baseline) / baseline)
+                if drift_pct > self.performance_threshold:
+                    threshold_breaches += 1
+
         report = {
+            "detector_type": "metric_threshold",
             "total_metrics": len(self.metrics),
             "baselines": len(self.baselines),
-            "anomalies": len(self.detect_anomalies())
+            "threshold_breaches": threshold_breaches,
+            "anomalies": len(self.detect_anomalies()),
+            "performance_threshold": self.performance_threshold,
+            "error_rate_threshold": self.error_rate_threshold,
         }
-        
+
         return report

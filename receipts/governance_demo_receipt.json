@@ -1,10 +1,10 @@
 {
-  "sros_version": "1.0.0-alpha",
+  "sros_version": "1.0.0a0",
   "receipt_type": "workflow_execution",
   "workflow_id": "governance_demo",
-  "run_id": "309f749f-6a9f-4c7a-834f-e18df5d62f42",
-  "started_at": "2026-03-15T04:08:06.311235+00:00",
-  "completed_at": "2026-03-15T04:08:06.640126+00:00",
+  "run_id": "2c12c403-3156-4764-a1e1-c1ef949c70aa",
+  "started_at": "2026-03-15T23:34:14.072285+00:00",
+  "completed_at": "2026-03-15T23:34:14.378691+00:00",
   "status": "success",
   "total_steps": 3,
   "steps": [

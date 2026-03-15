@@ -16,9 +16,17 @@ class WorkflowEngine:
         Executes a workflow definition.
         """
         workflow_id = workflow_def.get("@id", "unknown")
+        run_id = (context or {}).get("run_id")
         print(f"[WorkflowEngine] Starting workflow: {workflow_id}")
         
-        self.witness.record("workflow.start", {"workflow_id": workflow_id})
+        self.witness.record(
+            "workflow.start",
+            {"workflow_id": workflow_id, "run_id": run_id},
+            source="workflow_engine",
+            topic="workflow",
+            run_id=run_id,
+            correlation_id=run_id,
+        )
         
         # Extract steps
         steps = workflow_def.get("step", [])
@@ -35,7 +43,14 @@ class WorkflowEngine:
             instruction = step.get("input", {}).get("#text", "")
             
             print(f"  [STEP] {step_id}: {instruction}")
-            self.witness.record("workflow.step", {"step_id": step_id, "agent": agent_id})
+            self.witness.record(
+                "workflow.step",
+                {"step_id": step_id, "agent": agent_id, "run_id": run_id},
+                source="workflow_engine",
+                topic="workflow",
+                run_id=run_id,
+                correlation_id=step_id,
+            )
             
             # Simulate agent execution
             # In a real implementation, we would look up the agent from a registry
@@ -49,5 +64,12 @@ class WorkflowEngine:
             response = f"Processed {instruction}"
             self.event_bus.publish("runtime", "agent.acted", {"agent": agent_id, "response": response})
             
-        self.witness.record("workflow.end", {"workflow_id": workflow_id})
+        self.witness.record(
+            "workflow.end",
+            {"workflow_id": workflow_id, "run_id": run_id},
+            source="workflow_engine",
+            topic="workflow",
+            run_id=run_id,
+            correlation_id=run_id,
+        )
         print(f"[WorkflowEngine] Workflow {workflow_id} completed.")

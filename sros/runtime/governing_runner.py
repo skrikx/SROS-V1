@@ -71,7 +71,14 @@ class GoverningWorkflowRunner:
         workflow_def = parser.parse(srxml_path)
         workflow_id = workflow_def.get("@id", Path(srxml_path).stem)
 
-        witness.record("workflow.start", {"workflow_id": workflow_id, "run_id": run_id})
+        witness.record(
+            "workflow.start",
+            {"workflow_id": workflow_id, "run_id": run_id},
+            source="governing_runner",
+            topic="workflow",
+            run_id=run_id,
+            correlation_id=run_id,
+        )
         kernel.event_bus.publish("runtime", "workflow.start", {"workflow_id": workflow_id, "run_id": run_id})
 
         steps_raw = self._extract_steps(workflow_def)
@@ -114,11 +121,18 @@ class GoverningWorkflowRunner:
 
             gov_verdicts[verdict] = gov_verdicts.get(verdict, 0) + 1
 
-            witness.record("governance.evaluated", {
-                "step_id": step_id,
-                "verdict": verdict,
-                "reason": gov_ctx.get("reason", policy_result.reason)
-            })
+            witness.record(
+                "governance.evaluated",
+                {
+                    "step_id": step_id,
+                    "verdict": verdict,
+                    "reason": gov_ctx.get("reason", policy_result.reason),
+                },
+                source="governing_runner",
+                topic="governance",
+                run_id=run_id,
+                correlation_id=step_id,
+            )
 
             if "verdict" in self.ui:
                 self.ui["verdict"](
@@ -146,12 +160,26 @@ class GoverningWorkflowRunner:
             if "drift" in self.ui:
                 self.ui["drift"](drift, self.drift_threshold)
 
-            witness.record("workflow.step.completed", {"step_id": step_id, "drift": drift})
+            witness.record(
+                "workflow.step.completed",
+                {"step_id": step_id, "drift": drift},
+                source="governing_runner",
+                topic="workflow",
+                run_id=run_id,
+                correlation_id=step_id,
+            )
             step_results.append(self._build_step_res(step_id, agent_id, action, instruction, meta, verdict, drift, "completed"))
 
         end_ts = datetime.now(timezone.utc).isoformat()
         
-        witness.record("workflow.end", {"workflow_id": workflow_id})
+        witness.record(
+            "workflow.end",
+            {"workflow_id": workflow_id, "run_id": run_id},
+            source="governing_runner",
+            topic="workflow",
+            run_id=run_id,
+            correlation_id=run_id,
+        )
         kernel.event_bus.publish("runtime", "workflow.end", {"workflow_id": workflow_id})
 
         # --- Receipt Gen ---
@@ -159,7 +187,7 @@ class GoverningWorkflowRunner:
         chain_hash = _sha256_short("->".join(step_hashes))
 
         receipt = {
-            "sros_version": "1.0.0-alpha",
+            "sros_version": "1.0.0a0",
             "receipt_type": "workflow_execution",
             "workflow_id": workflow_id,
             "run_id": run_id,

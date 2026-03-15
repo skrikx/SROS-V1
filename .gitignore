@@ -44,3 +44,10 @@ SROS - VSCode/
 
 # Data artifacts (user-generated at runtime)
 data/
+# Additional release artifacts
+.venv/
+coverage.xml
+htmlcov/
+*.whl
+*.tar.gz
+

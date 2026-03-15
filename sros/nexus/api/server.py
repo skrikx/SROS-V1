@@ -1,33 +1,31 @@
-"""
-SROS HTTP API Server
+"""SROS HTTP API Server.
 
-FastAPI-based REST API for SROS operations.
+The API runtime is available for internal and experimental use.
+Public hardened v1 keeps this surface quarantined.
 """
-from typing import Dict, Any
+
 import logging
 
 logger = logging.getLogger(__name__)
 
-# Try to import FastAPI
 try:
-    from fastapi import FastAPI, HTTPException
+    from fastapi import FastAPI
     from fastapi.middleware.cors import CORSMiddleware
+
     FASTAPI_AVAILABLE = True
-except ImportError:
+except ImportError:  # pragma: no cover - optional dependency
     FASTAPI_AVAILABLE = False
     logger.warning("FastAPI not installed. API server unavailable.")
 
-
 if FASTAPI_AVAILABLE:
-    from .routes import register_routes
-    
+    from .routes import register_routes, API_STATUS
+
     app = FastAPI(
         title="SROS API",
         description="Sovereign Runtime Operating System API",
-        version="1.0.0"
+        version="1.0.0a0",
     )
-    
-    # CORS middleware
+
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],
@@ -35,35 +33,36 @@ if FASTAPI_AVAILABLE:
         allow_methods=["*"],
         allow_headers=["*"],
     )
-    
-    # Register routes
+
     register_routes(app)
-    
+
     @app.get("/")
     def root():
-        """Root endpoint."""
         return {
             "name": "SROS API",
-            "version": "1.0.0",
-            "status": "operational"
+            "version": "1.0.0a0",
+            "status": "quarantined",
+            "api": API_STATUS,
         }
-    
+
     @app.get("/health")
     def health():
-        """Health check endpoint."""
-        return {"status": "healthy"}
+        return {"status": "healthy", "api_surface": "quarantined"}
+else:
+    app = None
 
 
 def start_server(host: str = "0.0.0.0", port: int = 8000):
     """Start the API server."""
     if not FASTAPI_AVAILABLE:
         raise RuntimeError("FastAPI not installed. Run: pip install fastapi uvicorn")
-    
+
     try:
         import uvicorn
+
         uvicorn.run(app, host=host, port=port)
-    except ImportError:
-        raise RuntimeError("uvicorn not installed. Run: pip install uvicorn")
+    except ImportError as exc:  # pragma: no cover - optional dependency
+        raise RuntimeError("uvicorn not installed. Run: pip install uvicorn") from exc
 
 
 if __name__ == "__main__":

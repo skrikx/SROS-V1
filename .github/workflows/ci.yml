@@ -1,0 +1,55 @@
+name: CI Release Cage
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test-and-validate:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install package (editable)
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .
+          python -m pip install pytest build
+
+      - name: Version parity gate
+        run: python scripts/check_version_parity.py
+
+      - name: CLI and import gate
+        run: python scripts/validate_install_and_cli.py
+
+      - name: Pytest gate
+        run: pytest -q tests/test_mirroros_contract.py tests/test_api_gate.py tests/test_release_version_parity.py tests/test_kernel_boot.py tests/test_nexus_core.py
+
+      - name: Receipt schema gate
+        run: python scripts/validate_receipts.py
+
+      - name: Packaging gate (sdist + wheel)
+        run: python -m build
+
+      - name: Demo smoke and receipt evidence
+        run: |
+          sros run-demo
+          test -f receipts/governance_demo_receipt.json
+
+      - name: Upload receipt artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: receipts-${{ matrix.python-version }}
+          path: receipts/*_receipt.json

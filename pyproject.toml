@@ -1,6 +1,6 @@
 [project]
 name = "sros"
-version = "1.0.0"
+version = "1.0.0a0"
 description = "SROS v1: Sovereign Runtime Operating System"
 readme = "README.md"
 requires-python = ">=3.10"
